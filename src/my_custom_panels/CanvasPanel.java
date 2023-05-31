@@ -1,3 +1,7 @@
+package my_custom_panels;
+
+import models.ColorPoint;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -5,7 +9,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Canvas extends JPanel {
+public class CanvasPanel extends JPanel {
     private final static int STROKE_SIZE = 8;
 
     // holds all the paths created in the canvas
@@ -18,12 +22,13 @@ public class Canvas extends JPanel {
     private Color color;
 
     // canvas width and height
-    private int canvasWidth, canvasHeight;
+    private final int canvasWidth;
+    private final int canvasHeight;
 
     // location of the dots
     private int x, y;
 
-    public Canvas(int targetWidth, int targetHeight){
+    public CanvasPanel(int targetWidth, int targetHeight){
         super();
         setPreferredSize(new Dimension(targetWidth, targetHeight));
         setOpaque(true);
@@ -112,7 +117,6 @@ public class Canvas extends JPanel {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
-        // redraws all of the paths created so far
         for(List<ColorPoint> path : allPaths){
             ColorPoint from = null;
             for(ColorPoint point : path){

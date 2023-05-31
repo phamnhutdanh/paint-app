@@ -5,7 +5,7 @@ public class App {
         SwingUtilities.invokeLater(new Runnable(){
             @Override
             public void run() {
-                new PaintGui().setVisible(true);
+               new PaintGui(1280,960).setVisible(true);
             }
         });
     }

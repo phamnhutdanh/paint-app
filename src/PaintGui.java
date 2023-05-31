@@ -1,13 +1,14 @@
+import my_custom_panels.CanvasPanel;
+import my_custom_panels.ToolBarPanel;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class PaintGui extends JFrame {
-    public PaintGui(){
+    public PaintGui(int width, int height){
         super("Paint GUI");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setPreferredSize(new Dimension(1280, 960));
+        setPreferredSize(new Dimension(width, height));
         pack();
         setLocationRelativeTo(null);
 
@@ -16,42 +17,20 @@ public class PaintGui extends JFrame {
 
     private void addGuiComponents(){
         // JPanel Configs
-        JPanel canvasPanel = new JPanel();
+        JPanel container = new JPanel();
         SpringLayout springLayout = new SpringLayout();
-        canvasPanel.setLayout(springLayout);
+        container.setLayout(springLayout);
 
         // 1. Canvas
-        Canvas canvas = new Canvas(800, 600);
-        canvasPanel.add(canvas);
-        springLayout.putConstraint(SpringLayout.NORTH, canvas, 50, SpringLayout.NORTH, canvasPanel);
+        CanvasPanel canvas = new CanvasPanel(800, 600);
+        container.add(canvas);
+        springLayout.putConstraint(SpringLayout.NORTH, canvas, 50, SpringLayout.NORTH, container);
 
-        // 2. Color Chooser
-        JButton chooseColorButton = new JButton("Choose Color");
-        chooseColorButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Color c = JColorChooser.showDialog(null, "Select a color", Color.BLACK);
-                chooseColorButton.setBackground(c);
-                canvas.setColor(c);
-            }
-        });
-        canvasPanel.add(chooseColorButton);
-        springLayout.putConstraint(SpringLayout.NORTH, chooseColorButton, 10, SpringLayout.NORTH, canvasPanel);
-        springLayout.putConstraint(SpringLayout.WEST, chooseColorButton, 25, SpringLayout.WEST, canvasPanel);
+        // 2. Toolbar
+        ToolBarPanel tool = new ToolBarPanel(canvas);
+        container.add(tool);
+        springLayout.putConstraint(SpringLayout.NORTH, tool, 10, SpringLayout.NORTH, container);
 
-        // 3. Reset Button
-        JButton resetButton = new JButton("Reset");
-        resetButton.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                canvas.resetCanvas();
-            }
-        });
-        canvasPanel.add(resetButton);
-        springLayout.putConstraint(SpringLayout.NORTH, resetButton, 10, SpringLayout.NORTH, canvasPanel);
-        springLayout.putConstraint(SpringLayout.WEST, resetButton, 150, SpringLayout.WEST, canvasPanel);
-
-
-        this.getContentPane().add(canvasPanel);
+        this.getContentPane().add(container);
     }
 }
