@@ -1,3 +1,5 @@
+import utils.Utils;
+
 import javax.swing.*;
 
 public class App {
@@ -5,7 +7,7 @@ public class App {
         SwingUtilities.invokeLater(new Runnable(){
             @Override
             public void run() {
-               new PaintGui(1280,960).setVisible(true);
+               new PaintGui(Utils.WINDOW_WIDTH,Utils.WINDOW_HEIGHT).setVisible(true);
             }
         });
     }

@@ -1,5 +1,6 @@
 import my_custom_panels.CanvasPanel;
 import my_custom_panels.ToolBarPanel;
+import utils.Utils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,14 +23,15 @@ public class PaintGui extends JFrame {
         container.setLayout(springLayout);
 
         // 1. Canvas
-        CanvasPanel canvas = new CanvasPanel(800, 600);
+        CanvasPanel canvas = new CanvasPanel(Utils.CANVAS_WIDTH, Utils.CANVAS_HEIGHT);
         container.add(canvas);
-        springLayout.putConstraint(SpringLayout.NORTH, canvas, 50, SpringLayout.NORTH, container);
-
         // 2. Toolbar
         ToolBarPanel tool = new ToolBarPanel(canvas);
         container.add(tool);
+
         springLayout.putConstraint(SpringLayout.NORTH, tool, 10, SpringLayout.NORTH, container);
+        springLayout.putConstraint(SpringLayout.NORTH, canvas, 20, SpringLayout.SOUTH, tool);
+        springLayout.putConstraint(SpringLayout.WEST, canvas,20,SpringLayout.WEST,container);
 
         this.getContentPane().add(container);
     }
