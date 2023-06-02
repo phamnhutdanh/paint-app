@@ -1,38 +1,79 @@
-import my_custom_panels.CanvasPanel;
-import my_custom_panels.ToolBarPanel;
-import utils.Utils;
-
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class PaintGui extends JFrame {
-    public PaintGui(int width, int height){
-        super("Paint GUI");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setPreferredSize(new Dimension(width, height));
-        pack();
-        setLocationRelativeTo(null);
+    private JPanel contentPane;
+    private JMenuBar menuBar;
+    private JToolBar toolBar;
+    private JToolBar cc1;
+    private CoordinateBar coordinateBar;
+    private JScrollPane sp;
 
-        addGuiComponents();
+    private final int CONTENT_PANE_WIDTH = 1300;
+    private final int CONTENT_PANE_HEIGHT = 700;
+
+    private int inkPanelWidth;
+    private int inkPanelHeight;
+    private final Color background = Color.GRAY;
+
+    public PaintGui(){
+       init();
     }
 
-    private void addGuiComponents(){
-        // JPanel Configs
-        JPanel container = new JPanel();
-        SpringLayout springLayout = new SpringLayout();
-        container.setLayout(springLayout);
+    private void init() {
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        inkPanelWidth = dim.width - 150;
+        inkPanelHeight = dim.height- 160;
 
-        // 1. Canvas
-        CanvasPanel canvas = new CanvasPanel(Utils.CANVAS_WIDTH, Utils.CANVAS_HEIGHT);
-        container.add(canvas);
-        // 2. Toolbar
-        ToolBarPanel tool = new ToolBarPanel(canvas);
-        container.add(tool);
+        // construct layout manager.
+        contentPane = new JPanel();
+        contentPane.setLayout(null);
 
-        springLayout.putConstraint(SpringLayout.NORTH, tool, 10, SpringLayout.NORTH, container);
-        springLayout.putConstraint(SpringLayout.NORTH, canvas, 20, SpringLayout.SOUTH, tool);
-        springLayout.putConstraint(SpringLayout.WEST, canvas,20,SpringLayout.WEST,container);
+        initMenuBar();
+        initToolBar();
+        initColorChooser();
+        initCoordinateBar();
+        this.addWindowListener(windowCloser);
+        this.setSize(CONTENT_PANE_WIDTH, CONTENT_PANE_HEIGHT);
+        this.setPreferredSize(new Dimension(CONTENT_PANE_WIDTH,CONTENT_PANE_HEIGHT));
+        this.add(contentPane);
 
-        this.getContentPane().add(container);
+    }
+
+    private void initColorChooser() {
+        cc1 = (new ColorChooser(this)).getToolBar();
+        this.add(cc1, BorderLayout.WEST);
+        sp = new JScrollPane();
+        sp.setLocation(10, 10);
+        sp.setSize(inkPanelWidth, inkPanelHeight);
+        sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        sp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        contentPane.add(sp);
+        contentPane.setBackground(background);
+    }
+    private void initMenuBar() {
+        this.setJMenuBar(menuBar);
+    }
+    private void initToolBar() {
+        toolBar = (new ToolBar(this)).getToolBar();
+        this.add(toolBar, BorderLayout.PAGE_START);
+
+    }
+    private void initCoordinateBar() {
+        coordinateBar = new CoordinateBar();
+        this.add(coordinateBar, BorderLayout.PAGE_END);
+    }
+    private final WindowAdapter windowCloser = new WindowAdapter() {
+        @Override
+        public void windowClosing(WindowEvent event)
+        {
+            System.exit(0);
+        }
+    };
+
+    public JScrollPane getSP() {
+        return this.sp;
     }
 }
