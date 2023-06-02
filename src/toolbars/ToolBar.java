@@ -1,3 +1,7 @@
+package toolbars;
+
+import ui.PaintGui;
+
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -46,7 +50,6 @@ public class ToolBar {
     private JComboBox comboBox;
     private File f;
     private PaintGui frame;
-
 
     public ToolBar(PaintGui frame) {
         this.frame = frame;
@@ -118,19 +121,19 @@ public class ToolBar {
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         if(height > dim.height - 160 && width > dim.width - 150)
         {
-            frame.getSP().setSize(dim.width - 150, dim.height - 160);
+            frame.getScrollPane().setSize(dim.width - 150, dim.height - 160);
         }
         else if(width > dim.width - 150)
         {
-            frame.getSP().setSize(dim.width - 150, height);
+            frame.getScrollPane().setSize(dim.width - 150, height);
         }
         else if(height > dim.height - 160)
         {
-            frame.getSP().setSize(width, dim.height - 160);
+            frame.getScrollPane().setSize(width, dim.height - 160);
         }
         else
         {
-            frame.getSP().setSize(width, height);
+            frame.getScrollPane().setSize(width, height);
         }
     }
 }

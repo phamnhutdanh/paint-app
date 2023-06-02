@@ -1,3 +1,5 @@
+package toolbars;
+
 import java.awt.Color;
 
 import javax.swing.BorderFactory;
