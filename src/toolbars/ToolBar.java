@@ -1,6 +1,7 @@
 package toolbars;
 
 import ui.PaintGui;
+import utils.IconSourcePath;
 
 import java.awt.Color;
 import java.awt.Container;
@@ -72,18 +73,18 @@ public class ToolBar {
 
         //toolBar.setBackground( new Color(0, 153, 204));
 
-        save = new JButton("Save",new ImageIcon(this.getClass().getResource("/icons/Save-24.png")));
-        open = new JButton("Open",new ImageIcon(this.getClass().getResource("/icons/Add Folder-24.png")));
-        newFile = new JButton("New",new ImageIcon(this.getClass().getResource("/icons/Create New-24.png")));
-        pencil = new JButton("Pencil",new ImageIcon(this.getClass().getResource("/icons/Pencil-24.png")));
-        line = new JButton("Line", new ImageIcon(this.getClass().getResource("/icons/Line-24.png")));
-        rectangle = new JButton("Rectangle", new ImageIcon(this.getClass().getResource("/icons/Rectangle-24.png")));
-        circle = new JButton("Circle", new ImageIcon(this.getClass().getResource("/icons/Circled.png")));
-        text = new JButton("Text",new ImageIcon(this.getClass().getResource("/icons/Type-24.png")));
-        erase = new JButton("Erase", new ImageIcon(this.getClass().getResource("/icons/Eraser-24.png")));
-        undo = new JButton("Undo", new ImageIcon(this.getClass().getResource("/icons/Undo-24.png")));
-        redo = new JButton("Redo", new ImageIcon(this.getClass().getResource("/icons/Redo-24.png")));
-        clear = new JButton("Clear",new ImageIcon(this.getClass().getResource("/icons/Trash-24.png")));
+        save = new JButton("Save",new ImageIcon(this.getClass().getResource(IconSourcePath.SAVE)));
+        open = new JButton("Open",new ImageIcon(this.getClass().getResource(IconSourcePath.OPEN)));
+        newFile = new JButton("New",new ImageIcon(this.getClass().getResource(IconSourcePath.NEW_FILE)));
+        pencil = new JButton("Pencil",new ImageIcon(this.getClass().getResource(IconSourcePath.PENCIL)));
+        line = new JButton("Line", new ImageIcon(this.getClass().getResource(IconSourcePath.LINE)));
+        rectangle = new JButton("Rectangle", new ImageIcon(this.getClass().getResource(IconSourcePath.RECTANGLE)));
+        circle = new JButton("Circle", new ImageIcon(this.getClass().getResource(IconSourcePath.CIRCLE)));
+        text = new JButton("Text",new ImageIcon(this.getClass().getResource(IconSourcePath.TEXT)));
+        erase = new JButton("Erase", new ImageIcon(this.getClass().getResource(IconSourcePath.ERASE)));
+        undo = new JButton("Undo", new ImageIcon(this.getClass().getResource(IconSourcePath.UNDO)));
+        redo = new JButton("Redo", new ImageIcon(this.getClass().getResource(IconSourcePath.REDO)));
+        clear = new JButton("Clear",new ImageIcon(this.getClass().getResource(IconSourcePath.CLEAR)));
 
         String[] items = { "Line Width","1", "2", "3", "4", "5", "6", "7", "8" };
 
