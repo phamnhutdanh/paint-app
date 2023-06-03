@@ -65,7 +65,7 @@ public class ColorChooser extends JPanel {
         buttonGroup.setLayout(new GridLayout(3, 0, 8, 8));
 
          resultPanel = new JPanel();
-        ChooseColorButton chooseColorButton = new ChooseColorButton("Choose colors", new ImageIcon(
+        ChooseColorButton chooseColorButton = new ChooseColorButton(new ImageIcon(
                 this.getClass().getResource(IconSourcePath.CHOOSE_COLOR)
         ), this);
         JButton button3 = new JButton("Eye dropper");

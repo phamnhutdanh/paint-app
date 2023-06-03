@@ -12,8 +12,8 @@ public class ChooseColorButton extends JButton implements ActionListener {
     private ColorChooser colorChooser;
     private Color currentColor = Color.black;
 
-    public ChooseColorButton(String text, ImageIcon icon, ColorChooser colorChooser) {
-        super(text, icon);
+    public ChooseColorButton(ImageIcon icon, ColorChooser colorChooser) {
+        super("Choose color", icon);
         addActionListener(this);
 
         this.colorChooser = colorChooser;

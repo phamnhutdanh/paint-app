@@ -1,5 +1,6 @@
 package toolbars;
 
+import models.LineButton;
 import ui.PaintGui;
 import utils.IconSourcePath;
 
@@ -34,7 +35,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class ToolBar {
     private JToolBar toolBar;
     private JButton pencil;
-    private JButton line;
+    private LineButton lineButton;
     private JButton rectangle;
     private JButton circle;
     private JButton text;
@@ -76,12 +77,14 @@ public class ToolBar {
         save = new JButton("Save",new ImageIcon(this.getClass().getResource(IconSourcePath.SAVE)));
         open = new JButton("Open",new ImageIcon(this.getClass().getResource(IconSourcePath.OPEN)));
         newFile = new JButton("New",new ImageIcon(this.getClass().getResource(IconSourcePath.NEW_FILE)));
+
         pencil = new JButton("Pencil",new ImageIcon(this.getClass().getResource(IconSourcePath.PENCIL)));
-        line = new JButton("Line", new ImageIcon(this.getClass().getResource(IconSourcePath.LINE)));
+        lineButton = new LineButton(new ImageIcon(this.getClass().getResource(IconSourcePath.LINE)),frame);
         rectangle = new JButton("Rectangle", new ImageIcon(this.getClass().getResource(IconSourcePath.RECTANGLE)));
         circle = new JButton("Circle", new ImageIcon(this.getClass().getResource(IconSourcePath.CIRCLE)));
         text = new JButton("Text",new ImageIcon(this.getClass().getResource(IconSourcePath.TEXT)));
         erase = new JButton("Erase", new ImageIcon(this.getClass().getResource(IconSourcePath.ERASE)));
+
         undo = new JButton("Undo", new ImageIcon(this.getClass().getResource(IconSourcePath.UNDO)));
         redo = new JButton("Redo", new ImageIcon(this.getClass().getResource(IconSourcePath.REDO)));
         clear = new JButton("Clear",new ImageIcon(this.getClass().getResource(IconSourcePath.CLEAR)));
@@ -99,7 +102,7 @@ public class ToolBar {
         toolBar.add(save);
         toolBar.addSeparator();
         toolBar.add(pencil);
-        toolBar.add(line);
+        toolBar.add(lineButton);
         toolBar.add(rectangle);
         toolBar.add(circle);
         toolBar.addSeparator();
