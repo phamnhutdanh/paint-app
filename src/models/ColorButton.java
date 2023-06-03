@@ -27,6 +27,7 @@ public class ColorButton extends JButton implements ActionListener {
        // JButton b = (JButton) e.getSource();
         colorChooser.getFrame().getCanvasPanel().setColor(color);
         colorChooser.getResultPanel().setBackground(color);
+        colorChooser.setCurrentColor(color);
         /*secondaryColor.setBackground(b.getBackground());
 
         frame.getInkPanel().setColor(primaryColor.getBackground());

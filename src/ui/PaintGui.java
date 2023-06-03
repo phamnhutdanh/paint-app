@@ -20,7 +20,7 @@ public class PaintGui extends JFrame {
     private JScrollPane scrollPane;
     private CanvasPanel canvas;
 
-    private final int CONTENT_PANE_WIDTH = 1300;
+    private final int CONTENT_PANE_WIDTH = 1200;
     private final int CONTENT_PANE_HEIGHT = 700;
 
     private int inkPanelWidth;

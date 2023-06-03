@@ -74,17 +74,20 @@ public class ColorChooser extends JPanel {
         buttonGroup.add(button3);
         buttonGroup.add(resultPanel);
 
-        panel.add(buttonGroup, BorderLayout.NORTH);
-
         // Grid color
         JPanel colorPanel = new JPanel();
         colorPanel.setLayout(new GridLayout(16, 2, 8, 8));
         colorButtons.forEach(colorPanel::add);
+
+        panel.add(buttonGroup, BorderLayout.NORTH);
         panel.add(colorPanel, BorderLayout.CENTER);
     }
 
     public Color getCurrentColor() {
         return currentColor;
+    }
+    public void setCurrentColor(Color color){
+        currentColor = color;
     }
 
     public PaintGui getFrame() {

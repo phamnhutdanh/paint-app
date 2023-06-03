@@ -18,6 +18,7 @@ public class ChooseColorButton extends JButton implements ActionListener {
 
         this.colorChooser = colorChooser;
         this.colorChooser.getResultPanel().setBackground(currentColor);
+        this.colorChooser.setCurrentColor(currentColor);
     }
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -25,6 +26,7 @@ public class ChooseColorButton extends JButton implements ActionListener {
 
         colorChooser.getFrame().getCanvasPanel().setColor(currentColor);
         colorChooser.getResultPanel().setBackground(currentColor);
+        colorChooser.setCurrentColor(currentColor);
     }
     public Color getCurrentColor() {
         return currentColor;
