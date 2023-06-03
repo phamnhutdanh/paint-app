@@ -97,7 +97,7 @@ public class CanvasPanel extends JPanel implements MouseListener,MouseMotionList
         this.addMouseListener(this);
         this.addMouseMotionListener(this);
         this.frame = frame;
-        this.printPaintPanelSize(inkPanelWidth, inkPanelHeight);
+        //this.printPaintPanelSize(inkPanelWidth, inkPanelHeight);
         this.shapes = new Stack<Shape>();
         this.removed = new Stack<Shape>();
         this.grouped = 1;
@@ -283,7 +283,7 @@ public class CanvasPanel extends JPanel implements MouseListener,MouseMotionList
             primary = secondary;
             secondary = currentColor;
         }
-        printCoordinates(e);
+       // printCoordinates(e);
         x2 = e.getX();
         y2 = e.getY();
         dragged = true;
@@ -346,7 +346,7 @@ public class CanvasPanel extends JPanel implements MouseListener,MouseMotionList
     @Override
     public void mouseMoved(MouseEvent e) {
         // TODO Auto-generated method stub
-        printCoordinates(e);
+        //printCoordinates(e);
     }
 
     @Override
@@ -370,7 +370,7 @@ public class CanvasPanel extends JPanel implements MouseListener,MouseMotionList
     @Override
     public void mousePressed(MouseEvent e) {
         // TODO Auto-generated method stub
-        printCoordinates(e);
+        //printCoordinates(e);
         x1 = e.getX();
         y1 = e.getY();
     }
@@ -449,18 +449,6 @@ public class CanvasPanel extends JPanel implements MouseListener,MouseMotionList
         repaint();
     }
 
-    public void printCoordinates(MouseEvent e)
-    {
-        String posX = String.valueOf((int) e.getPoint().getX());
-        String posY = String.valueOf((int) e.getPoint().getY());
-        frame.getCoordinateBar().getCoordinates().setText(posX + ",  " + posY + " px");
-    }
-
-    // print drawer panel size at status tool bar
-    public void printPaintPanelSize(int width, int height)
-    {
-        frame.getCoordinateBar().getFrameSize().setText(width + ",  " + height + " px");
-    }
 
     public void setInkPanelWidth(int width)
     {
@@ -476,7 +464,7 @@ public class CanvasPanel extends JPanel implements MouseListener,MouseMotionList
         canvas = new BufferedImage(width, height,BufferedImage.TYPE_INT_ARGB);
         graphics2D = canvas.createGraphics();
         graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        this.printPaintPanelSize(width, height);
+        //this.printPaintPanelSize(width, height);
         this.setSize(width-3, height-3);
         this.setPreferredSize(new Dimension(width - 3, height - 3));
         clear();

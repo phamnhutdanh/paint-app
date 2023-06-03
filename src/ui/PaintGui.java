@@ -28,9 +28,9 @@ public class PaintGui extends JFrame {
     private final Color background = Color.GRAY;
 
     public PaintGui() {
-        coordinateBar = new CoordinateBar();
         contentPane = new JPanel();
         canvas = new CanvasPanel(0, this, inkPanelWidth, inkPanelHeight);
+        coordinateBar = new CoordinateBar(canvas);
         colorChooser = (new ColorChooser(this)).getToolBar();
         toolBar = (new ToolBar(this)).getToolBar();
         init();
