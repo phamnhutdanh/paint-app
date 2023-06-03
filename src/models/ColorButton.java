@@ -10,10 +10,12 @@ import java.awt.event.ActionListener;
 
 public class ColorButton extends JButton implements ActionListener {
     private Color color;
+    private ColorChooser colorChooser;
 
-    public ColorButton(Color color, Dimension buttonSize) {
+    public ColorButton(Color color, Dimension buttonSize, ColorChooser colorChooser) {
         super("");
         this.color = color;
+        this.colorChooser = colorChooser;
 
         setPreferredSize(buttonSize);
         setBackground(color);
@@ -22,13 +24,16 @@ public class ColorButton extends JButton implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
-        JButton b = (JButton) e.getSource();
-
+       // JButton b = (JButton) e.getSource();
+        colorChooser.getFrame().getCanvasPanel().setColor(color);
+        colorChooser.getResultPanel().setBackground(color);
         /*secondaryColor.setBackground(b.getBackground());
 
         frame.getInkPanel().setColor(primaryColor.getBackground());
         frame.getInkPanel().setFillColor(secondaryColor.getBackground());*/
+    }
 
+    public Color getColor() {
+        return  color;
     }
 }

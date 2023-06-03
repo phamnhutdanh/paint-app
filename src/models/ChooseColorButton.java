@@ -1,6 +1,6 @@
 package models;
 
-import panels.CanvasPanel;
+import toolbars.ColorChooser;
 import ui.PaintGui;
 
 import javax.swing.*;
@@ -9,20 +9,24 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ChooseColorButton extends JButton implements ActionListener {
-    private PaintGui frame;
-    private JPanel resultPanel;
+    private ColorChooser colorChooser;
+    private Color currentColor = Color.black;
 
-    public ChooseColorButton(String text, ImageIcon icon, PaintGui frame, JPanel resultPanel) {
+    public ChooseColorButton(String text, ImageIcon icon, ColorChooser colorChooser) {
         super(text, icon);
         addActionListener(this);
-        this.frame = frame;
-        this.resultPanel = resultPanel;
-        this.resultPanel.setBackground(Color.black);
+
+        this.colorChooser = colorChooser;
+        this.colorChooser.getResultPanel().setBackground(currentColor);
     }
     @Override
     public void actionPerformed(ActionEvent e) {
-        Color c = JColorChooser.showDialog(null, "Select a color", Color.BLACK);
-        frame.getCanvasPanel().setColor(c);
-        resultPanel.setBackground(c);
+        currentColor = JColorChooser.showDialog(null, "Select a color", Color.BLACK);
+
+        colorChooser.getFrame().getCanvasPanel().setColor(currentColor);
+        colorChooser.getResultPanel().setBackground(currentColor);
+    }
+    public Color getCurrentColor() {
+        return currentColor;
     }
 }

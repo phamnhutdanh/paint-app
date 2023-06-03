@@ -37,6 +37,8 @@ public class ColorChooser extends JPanel {
         }
     };
     private JToolBar colorChooser;
+    private Color currentColor;
+    private JPanel resultPanel;
     private PaintGui frame;
 
     public ColorChooser(PaintGui frame) {
@@ -55,22 +57,22 @@ public class ColorChooser extends JPanel {
     private void initializeColorChooser(JToolBar panel) {
         Dimension buttonSize = new Dimension(36, 8);
         colors.forEach(color -> {
-            colorButtons.add(new ColorButton(color, buttonSize));
+            colorButtons.add(new ColorButton(color, buttonSize, this));
         });
 
         // Button choose color
         JPanel buttonGroup = new JPanel();
         buttonGroup.setLayout(new GridLayout(3, 0, 8, 8));
 
-        JPanel resultColorPanel = new JPanel();
+         resultPanel = new JPanel();
         ChooseColorButton chooseColorButton = new ChooseColorButton("Choose colors", new ImageIcon(
                 this.getClass().getResource(IconSourcePath.CHOOSE_COLOR)
-        ), frame,resultColorPanel);
+        ), this);
         JButton button3 = new JButton("Eye dropper");
 
         buttonGroup.add(chooseColorButton);
         buttonGroup.add(button3);
-        buttonGroup.add(resultColorPanel);
+        buttonGroup.add(resultPanel);
 
         panel.add(buttonGroup, BorderLayout.NORTH);
 
@@ -81,6 +83,16 @@ public class ColorChooser extends JPanel {
         panel.add(colorPanel, BorderLayout.CENTER);
     }
 
+    public Color getCurrentColor() {
+        return currentColor;
+    }
+
+    public PaintGui getFrame() {
+        return frame;
+    }
+    public JPanel getResultPanel() {
+        return  resultPanel;
+    }
     public JToolBar getToolBar() {
         return this.colorChooser;
     }
