@@ -3,6 +3,7 @@ package toolbars;
 import models.LineButton;
 import ui.PaintGui;
 import utils.IconSourcePath;
+import utils.TOOLS;
 
 import java.awt.Color;
 import java.awt.Container;
@@ -57,7 +58,7 @@ public class ToolBar {
         this.frame = frame;
         fc = new JFileChooser(new File("."));
         fc.setFileFilter(new FileNameExtensionFilter("Image Files", "jpg", "png"));
-        this.initializeToolBar();
+        initializeToolBar();
     }
 
     private void initializeToolBar() {
@@ -114,6 +115,8 @@ public class ToolBar {
         toolBar.add(redo);
         toolBar.addSeparator();
         toolBar.add(comboBox);
+
+        frame.getCanvasPanel().setTool(TOOLS.LINE);
     }
 
     public JToolBar getToolBar() {

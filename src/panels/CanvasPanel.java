@@ -4,44 +4,34 @@ import models.Shape;
 import ui.PaintGui;
 import utils.TOOLS;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.Toolkit;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.geom.*;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
-import javax.swing.BorderFactory;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 
-public class CanvasPanel extends JPanel implements MouseListener,MouseMotionListener
-{
+public class CanvasPanel extends JPanel implements MouseListener,MouseMotionListener {
    // private TextDialog td;
     private BasicStroke stroke = new BasicStroke((float) 2);
-    BufferedImage canvas;
-    Graphics2D graphics2D;
+    private BufferedImage canvas;
+    private Graphics2D graphics2D;
     private TOOLS activeTool = TOOLS.PENCIL;
     //private JLabel label;
     private boolean eraser;
     private PaintGui frame;
-
     private Stack<Shape> shapes;
     private Stack<Shape> removed;
     private Stack<Shape> preview;
 
     private int grouped;
 
-    int x1, y1, x2, y2;
+    private int x1, y1, x2, y2;
 
     private boolean dragged = false;
     private Color currentColor;
@@ -80,8 +70,8 @@ public class CanvasPanel extends JPanel implements MouseListener,MouseMotionList
         this.fillColor = Color.white;
         setFocusable(true);
         requestFocus();
-        this.addMouseListener(this);
-        this.addMouseMotionListener(this);
+        //  this.addMouseListener(this);
+        //  this.addMouseMotionListener(this);
         this.frame = frame;
         //this.printPaintPanelSize(inkPanelWidth, inkPanelHeight);
         this.shapes = new Stack<Shape>();
@@ -164,7 +154,6 @@ public class CanvasPanel extends JPanel implements MouseListener,MouseMotionList
             }
 
         }
-
     }
 
     public void setTool(TOOLS tool) {
@@ -285,8 +274,8 @@ public class CanvasPanel extends JPanel implements MouseListener,MouseMotionList
             y1 = y2;
         }
         else if (activeTool == TOOLS.LINE){
-            preview.push(new Shape(x1, y1, x2, y2,primary,stroke,TOOLS.LINE,secondary,transparent));
-            repaint();
+           preview.push(new Shape(x1, y1, x2, y2,primary,stroke,TOOLS.LINE,secondary,transparent));
+           repaint();
         }
         else if (activeTool == TOOLS.RECTANGLE){
             if (x1 < x2 && y1 < y2) {
@@ -354,9 +343,8 @@ public class CanvasPanel extends JPanel implements MouseListener,MouseMotionList
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        // TODO Auto-generated method stub
         grouped++;
-        // TODO Auto-generated method stub
+
         Color primary = currentColor;
         Color secondary = fillColor;
         if (SwingUtilities.isRightMouseButton(e)) {
@@ -365,7 +353,7 @@ public class CanvasPanel extends JPanel implements MouseListener,MouseMotionList
         }
 
         if (activeTool == TOOLS.LINE && dragged) {
-            shapes.push(new Shape(x1, y1, x2, y2,primary,stroke,TOOLS.LINE,fillColor,transparent));
+           shapes.push(new Shape(x1, y1, x2, y2,primary,stroke,TOOLS.LINE,fillColor,transparent));
             repaint();
             //graphics2D.drawLine(x1, y1, x2, y2);
         }
@@ -426,6 +414,17 @@ public class CanvasPanel extends JPanel implements MouseListener,MouseMotionList
         repaint();
     }
 
+    public void setInkPanel(int width, int height)
+    {
+        canvas = new BufferedImage(width, height,BufferedImage.TYPE_INT_ARGB);
+        graphics2D = canvas.createGraphics();
+        graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        //this.printPaintPanelSize(width, height);
+        this.setSize(width-3, height-3);
+        this.setPreferredSize(new Dimension(width - 3, height - 3));
+        clear();
+
+    }
     public void setInkPanelWidth(int width)
     {
         this.inkPanelWidth = width;
@@ -464,7 +463,7 @@ public class CanvasPanel extends JPanel implements MouseListener,MouseMotionList
     public void setX2(int x2){
         this.x2 = x2;
     }
-    public void setY1(int Y1){
+    public void setY1(int y1){
         this.y1 = y1;
     }
     public void setY2(int y2){
@@ -504,7 +503,6 @@ public class CanvasPanel extends JPanel implements MouseListener,MouseMotionList
         this.graphics2D = graphics2D;
         this.graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     }
-
     public Stack<Shape> getShapes() {
         return shapes;
     }
@@ -515,17 +513,4 @@ public class CanvasPanel extends JPanel implements MouseListener,MouseMotionList
     public Shape popPreview() {
         return preview.pop();
     }
-
-    public void setInkPanel(int width, int height)
-    {
-        canvas = new BufferedImage(width, height,BufferedImage.TYPE_INT_ARGB);
-        graphics2D = canvas.createGraphics();
-        graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        //this.printPaintPanelSize(width, height);
-        this.setSize(width-3, height-3);
-        this.setPreferredSize(new Dimension(width - 3, height - 3));
-        clear();
-
-    }
-
 }
