@@ -12,8 +12,8 @@ import java.awt.event.WindowEvent;
 
 public class PaintGui extends JFrame {
     private JMenuBar menuBar;
-    private JToolBar toolBar;
-    private JToolBar colorChooser;
+    private ToolBar toolBar;
+    private ColorChooser colorChooser;
     private CoordinateBar coordinateBar;
 
     private JPanel contentPane;
@@ -30,9 +30,9 @@ public class PaintGui extends JFrame {
     public PaintGui() {
         contentPane = new JPanel();
         canvas = new CanvasPanel(0, this, inkPanelWidth, inkPanelHeight);
-        coordinateBar = new CoordinateBar(canvas);
-        colorChooser = new ColorChooser(this);
         toolBar = new ToolBar(this);
+        coordinateBar = new CoordinateBar(this);
+        colorChooser = new ColorChooser(this);
         init();
     }
 
@@ -103,7 +103,7 @@ public class PaintGui extends JFrame {
         }
     };
 
-    public JToolBar getToolBar() {
+    public ToolBar getToolBar() {
         return toolBar;
     }
 

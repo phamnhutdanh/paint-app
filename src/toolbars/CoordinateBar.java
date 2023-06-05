@@ -17,13 +17,13 @@ public class CoordinateBar extends JToolBar implements MouseListener, MouseMotio
     private JLabel coordinates;
     private JLabel frameSize;
     private Separator separator;
-    private CanvasPanel canvasPanel;
+    private PaintGui frame;
 
-    public CoordinateBar(CanvasPanel canvasPanel) {
-        this.canvasPanel = canvasPanel;
+    public CoordinateBar(PaintGui frame) {
+        this.frame = frame;
         initUI();
         setListeners();
-        printPaintPanelSize(canvasPanel.getWidth(), canvasPanel.getHeight());
+        printPaintPanelSize(frame.getCanvasPanel().getWidth(), frame.getCanvasPanel().getHeight());
     }
 
     private void initUI() {
@@ -46,8 +46,8 @@ public class CoordinateBar extends JToolBar implements MouseListener, MouseMotio
     }
 
     private void setListeners() {
-        canvasPanel.addMouseListener(this);
-        canvasPanel.addMouseMotionListener(this);
+        frame.getCanvasPanel().addMouseListener(this);
+        frame.getCanvasPanel().addMouseMotionListener(this);
     }
 
     public JLabel getCoordinates() {

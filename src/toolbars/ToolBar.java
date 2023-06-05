@@ -1,6 +1,5 @@
 package toolbars;
 
-import models.LineButton;
 import ui.PaintGui;
 import utils.IconSourcePath;
 import utils.SHAPES;
@@ -8,11 +7,13 @@ import utils.SHAPES;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 
-public class ToolBar extends JToolBar {
+public class ToolBar extends JToolBar implements ActionListener {
     private JButton pencil;
-    private LineButton lineButton;
+    private JButton lineButton;
     private JButton rectangle;
     private JButton circle;
     private JButton text;
@@ -58,7 +59,7 @@ public class ToolBar extends JToolBar {
         newFile = new JButton("New", new ImageIcon(this.getClass().getResource(IconSourcePath.NEW_FILE)));
 
         pencil = new JButton("Pencil", new ImageIcon(this.getClass().getResource(IconSourcePath.PENCIL)));
-        lineButton = new LineButton(new ImageIcon(this.getClass().getResource(IconSourcePath.LINE)), frame.getCanvasPanel());
+        lineButton = new JButton("Line", new ImageIcon(this.getClass().getResource(IconSourcePath.LINE)));
         rectangle = new JButton("Rectangle", new ImageIcon(this.getClass().getResource(IconSourcePath.RECTANGLE)));
         circle = new JButton("Circle", new ImageIcon(this.getClass().getResource(IconSourcePath.CIRCLE)));
         text = new JButton("Text", new ImageIcon(this.getClass().getResource(IconSourcePath.TEXT)));
@@ -94,17 +95,16 @@ public class ToolBar extends JToolBar {
         addSeparator();
         add(comboBox);
 
-        frame.getCanvasPanel().setTool(SHAPES.LINE);
+        addListeners();
+        frame.getCanvasPanel().setTool(SHAPES.PENCIL);
     }
 
+    private void addListeners() {
+        // TODO: add event here
+    }
     public JToolBar getToolBar() {
         return this;
     }
-
-    public JButton getLineButton() {
-        return lineButton;
-    }
-
     private void setDimensions(int width, int height) {
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         if (height > dim.height - 160 && width > dim.width - 150) {
@@ -116,5 +116,10 @@ public class ToolBar extends JToolBar {
         } else {
             frame.getScrollPane().setSize(width, height);
         }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
     }
 }

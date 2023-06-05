@@ -64,10 +64,10 @@ public class CanvasPanel extends JPanel implements MouseListener,MouseMotionList
         this.fillColor = Color.white;
         setFocusable(true);
         requestFocus();
-        // this.addMouseListener(this);
-        // this.addMouseMotionListener(this);
+        this.addMouseListener(this);
+        this.addMouseMotionListener(this);
         this.frame = frame;
-    //    this.toolBar = frame.getToolBar();
+        this.toolBar = frame.getToolBar();
         this.shapes = new Stack<Shape>();
         this.removed = new Stack<Shape>();
         this.grouped = 1;
@@ -147,7 +147,7 @@ public class CanvasPanel extends JPanel implements MouseListener,MouseMotionList
 
     @Override
     public void mouseDragged(MouseEvent e) {
-       /* Color primary = currentColor;
+        Color primary = currentColor;
         Color secondary = fillColor;
         if (SwingUtilities.isRightMouseButton(e)) {
             primary = secondary;
@@ -210,10 +210,6 @@ public class CanvasPanel extends JPanel implements MouseListener,MouseMotionList
                 //graphics2D.draw(new Ellipse2D.Double(x2, y2, x1 - x2, y1 - y2));
             }
             repaint();
-        }*/
-
-        if (activeTool == SHAPES.LINE) {
-
         }
     }
 
@@ -295,6 +291,7 @@ public class CanvasPanel extends JPanel implements MouseListener,MouseMotionList
         dragged = false;
         removed.removeAllElements();
         repaint();
+
     }
 
 
