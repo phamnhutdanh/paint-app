@@ -1,8 +1,9 @@
 package panels;
 
 import models.Shape;
+import toolbars.ToolBar;
 import ui.PaintGui;
-import utils.TOOLS;
+import utils.SHAPES;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,13 +16,12 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
 
-
 public class CanvasPanel extends JPanel implements MouseListener,MouseMotionListener {
    // private TextDialog td;
     private BasicStroke stroke = new BasicStroke((float) 2);
     private BufferedImage canvas;
     private Graphics2D graphics2D;
-    private TOOLS activeTool = TOOLS.PENCIL;
+    private SHAPES activeTool = SHAPES.PENCIL;
     //private JLabel label;
     private boolean eraser;
     private PaintGui frame;
@@ -29,29 +29,23 @@ public class CanvasPanel extends JPanel implements MouseListener,MouseMotionList
     private Stack<Shape> removed;
     private Stack<Shape> preview;
 
-    private int grouped;
+    private int grouped = 0;
 
     private int x1, y1, x2, y2;
 
     private boolean dragged = false;
     private Color currentColor;
     private Color fillColor;
-    private boolean transparent;
+    private boolean transparent = false;
 
     private int inkPanelWidth;
     private int inkPanelHeight;
-
+    private ToolBar toolBar;
     public CanvasPanel()
     {
-        // construct components
-        // contentPane > outerPanel > inkPanel > (Components: clearButton, stroke)
-        // configure components
-        // add listeners
-        // set components into the contentPane
         this.setBackground(Color.white);
         this.setBorder(BorderFactory.createLineBorder(Color.black));
         this.setPreferredSize(new Dimension(250, 250));
-        //this.eraser = false;
         this.shapes = new Stack<Shape>();
     }
 
@@ -70,10 +64,10 @@ public class CanvasPanel extends JPanel implements MouseListener,MouseMotionList
         this.fillColor = Color.white;
         setFocusable(true);
         requestFocus();
-        //  this.addMouseListener(this);
-        //  this.addMouseMotionListener(this);
+        // this.addMouseListener(this);
+        // this.addMouseMotionListener(this);
         this.frame = frame;
-        //this.printPaintPanelSize(inkPanelWidth, inkPanelHeight);
+    //    this.toolBar = frame.getToolBar();
         this.shapes = new Stack<Shape>();
         this.removed = new Stack<Shape>();
         this.grouped = 1;
@@ -81,16 +75,11 @@ public class CanvasPanel extends JPanel implements MouseListener,MouseMotionList
         this.transparent = true;
         //td = new TextDialog(frame);
 
-        //if the mouse is pressed it sets the oldX & oldY
-        //coordinates as the mouses x & y coordinates
-
-        //while the mouse is dragged it sets currentX & currentY as the mouses x and y
-        //then it draws a line at the coordinates
-        //it repaints it and sets oldX and oldY as currentX and currentY
     }
 
     @Override
     public void paintComponent(Graphics g){
+        super.paintComponent(g);
         if(canvas == null){
             canvas = new BufferedImage(inkPanelWidth, inkPanelHeight,BufferedImage.TYPE_INT_ARGB);
             graphics2D = canvas.createGraphics();
@@ -106,10 +95,10 @@ public class CanvasPanel extends JPanel implements MouseListener,MouseMotionList
             g2.setColor(s.getColor());
             g2.setStroke(s.getStroke());
 
-            if (s.getShape() == TOOLS.LINE){
+            if (s.getShape() == SHAPES.LINE){
                 g2.drawLine(s.getX1(), s.getY1(), s.getX2(), s.getY2());
             }
-            else if (s.getShape() == TOOLS.RECTANGLE){
+            else if (s.getShape() == SHAPES.RECTANGLE){
 
                 g2.drawRect(s.getX1(), s.getY1(), s.getX2(), s.getY2());
                 if(s.getTransparency() == false){
@@ -117,14 +106,14 @@ public class CanvasPanel extends JPanel implements MouseListener,MouseMotionList
                     g2.fillRect(s.getX1(), s.getY1(), s.getX2(), s.getY2());
                 }
             }
-            else if (s.getShape() == TOOLS.CIRCLE){
+            else if (s.getShape() == SHAPES.CIRCLE){
                 g2.drawOval(s.getX1(), s.getY1(), s.getX2(), s.getY2());
                 if(s.getTransparency() == false){
                     g2.setColor(s.getfillColor());
                     g2.fillOval(s.getX1(), s.getY1(), s.getX2(), s.getY2());
                 }
             }
-            else if (s.getShape() == TOOLS.TEXT) {
+            else if (s.getShape() == SHAPES.TEXT) {
                 //g2.setFont(s.getFont());
                 g2.drawString(s.getMessage(), s.getX1(), s.getY1());
             }
@@ -133,11 +122,11 @@ public class CanvasPanel extends JPanel implements MouseListener,MouseMotionList
             Shape s = preview.pop();
             g2.setColor(s.getColor());
             g2.setStroke(s.getStroke());
-            if (s.getShape() == TOOLS.LINE){
+            if (s.getShape() == SHAPES.LINE){
                 g2.drawLine(s.getX1(), s.getY1(), s.getX2(), s.getY2());
 
             }
-            else if (s.getShape() == TOOLS.RECTANGLE){
+            else if (s.getShape() == SHAPES.RECTANGLE){
 
                 g2.drawRect(s.getX1(), s.getY1(), s.getX2(), s.getY2());
                 if(s.getTransparency() == false){
@@ -145,7 +134,7 @@ public class CanvasPanel extends JPanel implements MouseListener,MouseMotionList
                     g2.fillRect(s.getX1(), s.getY1(), s.getX2(), s.getY2());
                 }
             }
-            else if (s.getShape() == TOOLS.CIRCLE){
+            else if (s.getShape() == SHAPES.CIRCLE){
                 g2.drawOval(s.getX1(), s.getY1(), s.getX2(), s.getY2());
                 if(s.getTransparency() == false){
                     g2.setColor(s.getfillColor());
@@ -156,7 +145,177 @@ public class CanvasPanel extends JPanel implements MouseListener,MouseMotionList
         }
     }
 
-    public void setTool(TOOLS tool) {
+    @Override
+    public void mouseDragged(MouseEvent e) {
+       /* Color primary = currentColor;
+        Color secondary = fillColor;
+        if (SwingUtilities.isRightMouseButton(e)) {
+            primary = secondary;
+            secondary = currentColor;
+        }
+       // printCoordinates(e);
+        x2 = e.getX();
+        y2 = e.getY();
+        dragged = true;
+        if (activeTool == SHAPES.ERASER){
+            shapes.push(new Shape(x1, y1, x2, y2,Color.white,stroke, SHAPES.LINE,grouped));
+            repaint();
+            x1 = x2;
+            y1 = y2;
+        }
+        if (activeTool == SHAPES.PENCIL) {
+            shapes.push(new Shape(x1, y1, x2, y2,primary,stroke, SHAPES.LINE,grouped));
+            repaint();
+            x1 = x2;
+            y1 = y2;
+        }
+        else if (activeTool == SHAPES.LINE){
+           preview.push(new Shape(x1, y1, x2, y2,primary,stroke, SHAPES.LINE,secondary,transparent));
+           repaint();
+        }
+        else if (activeTool == SHAPES.RECTANGLE){
+            if (x1 < x2 && y1 < y2) {
+                preview.push(new Shape(x1, y1, x2 - x1, y2 - y1,primary,stroke, SHAPES.RECTANGLE,secondary,transparent));
+                //graphics2D.draw(new Rectangle2D.Double(x1, y1, x2 - x1, y2 - y1));
+            }
+            else if (x2 < x1 && y1 < y2) {
+                preview.push(new Shape(x2, y1, x1 - x2, y2 - y1,primary,stroke, SHAPES.RECTANGLE,secondary,transparent));
+                //graphics2D.draw(new Rectangle2D.Double(x2, y1, x1 - x2, y2 - y1));
+            }
+            else if (x1 < x2 && y2 < y1) {
+                preview.push(new Shape(x1, y2, x2 - x1, y1 - y2,primary,stroke, SHAPES.RECTANGLE,secondary,transparent));
+                //graphics2D.draw(new Rectangle2D.Double(x1, y2, x2 - x1, y1 - y2));
+            }
+            else if (x2 < x1 && y2 < y1) {
+                preview.push(new Shape(x2, y2, x1 - x2, y1 - y2,primary,stroke, SHAPES.RECTANGLE,secondary,transparent));
+                //graphics2D.draw(new Rectangle2D.Double(x2, y2, x1 - x2, y1 - y2));
+            }
+            repaint();
+        }
+        else if (activeTool == SHAPES.CIRCLE) {
+            if (x1 < x2 && y1 < y2) {
+                preview.push(new Shape(x1, y1, x2 - x1, y2 - y1,primary,stroke, SHAPES.CIRCLE,secondary,transparent));
+                //graphics2D.draw(new Ellipse2D.Double(x1, y1, x2 - x1, y2 - y1));
+            }
+            else if (x2 < x1 && y1 < y2) {
+                preview.push(new Shape(x2, y1, x1 - x2, y2 - y1,primary,stroke, SHAPES.CIRCLE,secondary,transparent));
+                //graphics2D.draw(new Ellipse2D.Double(x2, y1, x1 - x2, y2 - y1));
+            }
+            else if (x1 < x2 && y2 < y1) {
+                preview.push(new Shape(x1, y2, x2 - x1, y1 - y2,primary,stroke, SHAPES.CIRCLE,secondary,transparent));
+                //graphics2D.draw(new Ellipse2D.Double(x1, y2, x2 - x1, y1 - y2));
+            }
+            else if (x2 < x1 && y2 < y1) {
+                preview.push(new Shape(x2, y2, x1 - x2, y1 - y2,primary,stroke, SHAPES.CIRCLE,secondary,transparent));
+                //graphics2D.draw(new Ellipse2D.Double(x2, y2, x1 - x2, y1 - y2));
+            }
+            repaint();
+        }*/
+
+        if (activeTool == SHAPES.LINE) {
+
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        //printCoordinates(e);
+        x1 = e.getX();
+        y1 = e.getY();
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        grouped++;
+
+        Color primary = currentColor;
+        Color secondary = fillColor;
+        if (SwingUtilities.isRightMouseButton(e)) {
+            primary = secondary;
+            secondary = currentColor;
+        }
+
+        if (activeTool == SHAPES.LINE && dragged) {
+           shapes.push(new Shape(x1, y1, x2, y2,primary,stroke, SHAPES.LINE,fillColor,transparent));
+            repaint();
+            //graphics2D.drawLine(x1, y1, x2, y2);
+        }
+        else if (activeTool == SHAPES.RECTANGLE && dragged) {
+
+            if (x1 < x2 && y1 < y2) {
+                shapes.push(new Shape(x1, y1, x2 - x1, y2 - y1,primary,stroke, SHAPES.RECTANGLE,secondary, transparent));
+                //graphics2D.draw(new Rectangle2D.Double(x1, y1, x2 - x1, y2 - y1));
+            }
+            else if (x2 < x1 && y1 < y2) {
+                shapes.push(new Shape(x2, y1, x1 - x2, y2 - y1,primary,stroke, SHAPES.RECTANGLE,secondary, transparent));
+                //	graphics2D.draw(new Rectangle2D.Double(x2, y1, x1 - x2, y2 - y1));
+            }
+            else if (x1 < x2 && y2 < y1) {
+                shapes.push(new Shape(x1, y2, x2 - x1, y1 - y2,primary,stroke, SHAPES.RECTANGLE,secondary, transparent));
+                //graphics2D.draw(new Rectangle2D.Double(x1, y2, x2 - x1, y1 - y2));
+            }
+            else if (x2 < x1 && y2 < y1) {
+                shapes.push(new Shape(x2, y2, x1 - x2, y1 - y2,primary,stroke, SHAPES.RECTANGLE,secondary, transparent));
+                //	graphics2D.draw(new Rectangle2D.Double(x2, y2, x1 - x2, y1 - y2));
+            }
+
+        }
+        else if (activeTool == SHAPES.CIRCLE && dragged) {
+            if (x1 < x2 && y1 < y2) {
+                shapes.push(new Shape(x1, y1, x2 - x1, y2 - y1,primary,stroke, SHAPES.CIRCLE,secondary, transparent));
+                //	graphics2D.draw(new Ellipse2D.Double(x1, y1, x2 - x1, y2 - y1));
+            }
+            else if (x2 < x1 && y1 < y2) {
+                shapes.push(new Shape(x2, y1, x1 - x2, y2 - y1,primary,stroke, SHAPES.CIRCLE,secondary, transparent));
+                //graphics2D.draw(new Ellipse2D.Double(x2, y1, x1 - x2, y2 - y1));
+            }
+            else if (x1 < x2 && y2 < y1) {
+                shapes.push(new Shape(x1, y2, x2 - x1, y1 - y2,primary,stroke, SHAPES.CIRCLE,secondary, transparent));
+                //graphics2D.draw(new Ellipse2D.Double(x1, y2, x2 - x1, y1 - y2));
+            }
+            else if (x2 < x1 && y2 < y1) {
+                shapes.push(new Shape(x2, y2, x1 - x2, y1 - y2,primary,stroke, SHAPES.CIRCLE,secondary, transparent));
+                //	graphics2D.draw(new Ellipse2D.Double(x2, y2, x1 - x2, y1 - y2));
+            }
+        }
+        else if (activeTool == SHAPES.SELECT){
+
+        }
+        else if (activeTool == SHAPES.TEXT){
+           /* int i = td.showCustomDialog(frame);
+            if (i == TextDialog.APPLY_OPTION) {
+                shapes.push(new Shape(x1, y1, td.getInputSize(), td.getFont(), primary, stroke, 5, td.getText())); //int x1, int y1, int fontSize, Color color, Font font
+            }
+*/
+
+        }
+        else if (activeTool == SHAPES.FILL) {
+            floodFill(new Point2D.Double(x1, y1), fillColor);
+        }
+        dragged = false;
+        removed.removeAllElements();
+        repaint();
+    }
+
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        //printCoordinates(e);
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+    }
+
+    public void setTool(SHAPES tool) {
         this.activeTool = tool;
     }
 
@@ -245,181 +404,14 @@ public class CanvasPanel extends JPanel implements MouseListener,MouseMotionList
                     queue.add(new Point2D.Double(p.getX() + 1, p.getY()));
                     queue.add(new Point2D.Double(p.getX(), p.getY() - 1));
                     queue.add(new Point2D.Double(p.getX(), p.getY() + 1));
-                    //System.out.println("0");
                 }
         }
     }
-    @Override
-    public void mouseDragged(MouseEvent e) {
-        Color primary = currentColor;
-        Color secondary = fillColor;
-        if (SwingUtilities.isRightMouseButton(e)) {
-            primary = secondary;
-            secondary = currentColor;
-        }
-       // printCoordinates(e);
-        x2 = e.getX();
-        y2 = e.getY();
-        dragged = true;
-        if (activeTool == TOOLS.ERASER){
-            shapes.push(new Shape(x1, y1, x2, y2,Color.white,stroke,TOOLS.LINE,grouped));
-            repaint();
-            x1 = x2;
-            y1 = y2;
-        }
-        if (activeTool == TOOLS.PENCIL) {
-            shapes.push(new Shape(x1, y1, x2, y2,primary,stroke,TOOLS.LINE,grouped));
-            repaint();
-            x1 = x2;
-            y1 = y2;
-        }
-        else if (activeTool == TOOLS.LINE){
-           preview.push(new Shape(x1, y1, x2, y2,primary,stroke,TOOLS.LINE,secondary,transparent));
-           repaint();
-        }
-        else if (activeTool == TOOLS.RECTANGLE){
-            if (x1 < x2 && y1 < y2) {
-                preview.push(new Shape(x1, y1, x2 - x1, y2 - y1,primary,stroke,TOOLS.RECTANGLE,secondary,transparent));
-                //graphics2D.draw(new Rectangle2D.Double(x1, y1, x2 - x1, y2 - y1));
-            }
-            else if (x2 < x1 && y1 < y2) {
-                preview.push(new Shape(x2, y1, x1 - x2, y2 - y1,primary,stroke,TOOLS.RECTANGLE,secondary,transparent));
-                //graphics2D.draw(new Rectangle2D.Double(x2, y1, x1 - x2, y2 - y1));
-            }
-            else if (x1 < x2 && y2 < y1) {
-                preview.push(new Shape(x1, y2, x2 - x1, y1 - y2,primary,stroke,TOOLS.RECTANGLE,secondary,transparent));
-                //graphics2D.draw(new Rectangle2D.Double(x1, y2, x2 - x1, y1 - y2));
-            }
-            else if (x2 < x1 && y2 < y1) {
-                preview.push(new Shape(x2, y2, x1 - x2, y1 - y2,primary,stroke,TOOLS.RECTANGLE,secondary,transparent));
-                //graphics2D.draw(new Rectangle2D.Double(x2, y2, x1 - x2, y1 - y2));
-            }
-            repaint();
-        }
-        else if (activeTool == TOOLS.CIRCLE) {
-            if (x1 < x2 && y1 < y2) {
-                preview.push(new Shape(x1, y1, x2 - x1, y2 - y1,primary,stroke,TOOLS.CIRCLE,secondary,transparent));
-                //graphics2D.draw(new Ellipse2D.Double(x1, y1, x2 - x1, y2 - y1));
-            }
-            else if (x2 < x1 && y1 < y2) {
-                preview.push(new Shape(x2, y1, x1 - x2, y2 - y1,primary,stroke,TOOLS.CIRCLE,secondary,transparent));
-                //graphics2D.draw(new Ellipse2D.Double(x2, y1, x1 - x2, y2 - y1));
-            }
-            else if (x1 < x2 && y2 < y1) {
-                preview.push(new Shape(x1, y2, x2 - x1, y1 - y2,primary,stroke,TOOLS.CIRCLE,secondary,transparent));
-                //graphics2D.draw(new Ellipse2D.Double(x1, y2, x2 - x1, y1 - y2));
-            }
-            else if (x2 < x1 && y2 < y1) {
-                preview.push(new Shape(x2, y2, x1 - x2, y1 - y2,primary,stroke,TOOLS.CIRCLE,secondary,transparent));
-                //graphics2D.draw(new Ellipse2D.Double(x2, y2, x1 - x2, y1 - y2));
-            }
-            repaint();
-        }
-    }
-
-    @Override
-    public void mouseMoved(MouseEvent e) {
-        //printCoordinates(e);
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-        //printCoordinates(e);
-        x1 = e.getX();
-        y1 = e.getY();
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-        grouped++;
-
-        Color primary = currentColor;
-        Color secondary = fillColor;
-        if (SwingUtilities.isRightMouseButton(e)) {
-            primary = secondary;
-            secondary = currentColor;
-        }
-
-        if (activeTool == TOOLS.LINE && dragged) {
-           shapes.push(new Shape(x1, y1, x2, y2,primary,stroke,TOOLS.LINE,fillColor,transparent));
-            repaint();
-            //graphics2D.drawLine(x1, y1, x2, y2);
-        }
-        else if (activeTool == TOOLS.RECTANGLE && dragged) {
-
-            if (x1 < x2 && y1 < y2) {
-                shapes.push(new Shape(x1, y1, x2 - x1, y2 - y1,primary,stroke,TOOLS.RECTANGLE,secondary, transparent));
-                //graphics2D.draw(new Rectangle2D.Double(x1, y1, x2 - x1, y2 - y1));
-            }
-            else if (x2 < x1 && y1 < y2) {
-                shapes.push(new Shape(x2, y1, x1 - x2, y2 - y1,primary,stroke,TOOLS.RECTANGLE,secondary, transparent));
-                //	graphics2D.draw(new Rectangle2D.Double(x2, y1, x1 - x2, y2 - y1));
-            }
-            else if (x1 < x2 && y2 < y1) {
-                shapes.push(new Shape(x1, y2, x2 - x1, y1 - y2,primary,stroke,TOOLS.RECTANGLE,secondary, transparent));
-                //graphics2D.draw(new Rectangle2D.Double(x1, y2, x2 - x1, y1 - y2));
-            }
-            else if (x2 < x1 && y2 < y1) {
-                shapes.push(new Shape(x2, y2, x1 - x2, y1 - y2,primary,stroke,TOOLS.RECTANGLE,secondary, transparent));
-                //	graphics2D.draw(new Rectangle2D.Double(x2, y2, x1 - x2, y1 - y2));
-            }
-
-        }
-        else if (activeTool == TOOLS.CIRCLE && dragged) {
-            if (x1 < x2 && y1 < y2) {
-                shapes.push(new Shape(x1, y1, x2 - x1, y2 - y1,primary,stroke,TOOLS.CIRCLE,secondary, transparent));
-                //	graphics2D.draw(new Ellipse2D.Double(x1, y1, x2 - x1, y2 - y1));
-            }
-            else if (x2 < x1 && y1 < y2) {
-                shapes.push(new Shape(x2, y1, x1 - x2, y2 - y1,primary,stroke,TOOLS.CIRCLE,secondary, transparent));
-                //graphics2D.draw(new Ellipse2D.Double(x2, y1, x1 - x2, y2 - y1));
-            }
-            else if (x1 < x2 && y2 < y1) {
-                shapes.push(new Shape(x1, y2, x2 - x1, y1 - y2,primary,stroke,TOOLS.CIRCLE,secondary, transparent));
-                //graphics2D.draw(new Ellipse2D.Double(x1, y2, x2 - x1, y1 - y2));
-            }
-            else if (x2 < x1 && y2 < y1) {
-                shapes.push(new Shape(x2, y2, x1 - x2, y1 - y2,primary,stroke,TOOLS.CIRCLE,secondary, transparent));
-                //	graphics2D.draw(new Ellipse2D.Double(x2, y2, x1 - x2, y1 - y2));
-            }
-        }
-        else if (activeTool == TOOLS.SELECT){
-
-        }
-        else if (activeTool == TOOLS.TEXT){
-           /* int i = td.showCustomDialog(frame);
-            if (i == TextDialog.APPLY_OPTION) {
-                shapes.push(new Shape(x1, y1, td.getInputSize(), td.getFont(), primary, stroke, 5, td.getText())); //int x1, int y1, int fontSize, Color color, Font font
-            }
-*/
-
-        }
-        else if (activeTool == TOOLS.FILL) {
-            floodFill(new Point2D.Double(x1, y1), fillColor);
-        }
-        dragged = false;
-        removed.removeAllElements();
-        repaint();
-    }
-
     public void setInkPanel(int width, int height)
     {
         canvas = new BufferedImage(width, height,BufferedImage.TYPE_INT_ARGB);
         graphics2D = canvas.createGraphics();
         graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        //this.printPaintPanelSize(width, height);
         this.setSize(width-3, height-3);
         this.setPreferredSize(new Dimension(width - 3, height - 3));
         clear();
@@ -486,31 +478,5 @@ public class CanvasPanel extends JPanel implements MouseListener,MouseMotionList
     }
     public void removedALl(){
         removed.removeAllElements();
-    }
-    public BufferedImage getCanvas() {
-        return canvas;
-    }
-    public void setCanvas(BufferedImage canvas){
-        this.canvas = canvas;
-    }
-    public int getPanelWidth() {
-        return inkPanelWidth;
-    }
-    public int getPanelHeight() {
-        return inkPanelHeight;
-    }
-    public void setGraphics2D(Graphics2D graphics2D) {
-        this.graphics2D = graphics2D;
-        this.graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    }
-    public Stack<Shape> getShapes() {
-        return shapes;
-    }
-
-    public Stack<Shape> getPreview() {
-        return preview;
-    }
-    public Shape popPreview() {
-        return preview.pop();
     }
 }

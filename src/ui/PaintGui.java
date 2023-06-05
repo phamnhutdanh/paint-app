@@ -31,8 +31,8 @@ public class PaintGui extends JFrame {
         contentPane = new JPanel();
         canvas = new CanvasPanel(0, this, inkPanelWidth, inkPanelHeight);
         coordinateBar = new CoordinateBar(canvas);
-        colorChooser = (new ColorChooser(this)).getToolBar();
-        toolBar = (new ToolBar(this)).getToolBar();
+        colorChooser = new ColorChooser(this);
+        toolBar = new ToolBar(this);
         init();
     }
 
@@ -102,6 +102,10 @@ public class PaintGui extends JFrame {
             System.exit(0);
         }
     };
+
+    public JToolBar getToolBar() {
+        return toolBar;
+    }
 
     public JScrollPane getScrollPane() {
         return this.scrollPane;

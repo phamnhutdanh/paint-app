@@ -10,7 +10,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class ColorChooser extends JPanel {
+public class ColorChooser extends JToolBar {
     private final ArrayList<ColorButton> colorButtons = new ArrayList<ColorButton>();
     private final ArrayList<Color> colors = new ArrayList<Color>() {
         {
@@ -36,25 +36,23 @@ public class ColorChooser extends JPanel {
             add(new Color(255, 255, 255));
         }
     };
-    private JToolBar colorChooser;
     private Color currentColor;
     private JPanel resultPanel;
     private PaintGui frame;
 
     public ColorChooser(PaintGui frame) {
-        colorChooser = new JToolBar(JToolBar.VERTICAL);
-
-        colorChooser.setLayout(new BorderLayout());
-        colorChooser.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 0, Color.BLACK));
-        colorChooser.setFloatable(false);
-        colorChooser.setBorder(new EmptyBorder(12, 12, 12, 12));
+        super(JToolBar.VERTICAL);
+        setLayout(new BorderLayout());
+        setBorder(BorderFactory.createMatteBorder(1, 0, 1, 0, Color.BLACK));
+        setFloatable(false);
+        setBorder(new EmptyBorder(12, 12, 12, 12));
         this.frame = frame;
 
-        initializeColorChooser(colorChooser);
+        initializeColorChooser();
         //cd = new ColorDialog(frame, primaryColor.getBackground());
     }
 
-    private void initializeColorChooser(JToolBar panel) {
+    private void initializeColorChooser() {
         Dimension buttonSize = new Dimension(36, 8);
         colors.forEach(color -> {
             colorButtons.add(new ColorButton(color, buttonSize, this));
@@ -79,8 +77,8 @@ public class ColorChooser extends JPanel {
         colorPanel.setLayout(new GridLayout(16, 2, 8, 8));
         colorButtons.forEach(colorPanel::add);
 
-        panel.add(buttonGroup, BorderLayout.NORTH);
-        panel.add(colorPanel, BorderLayout.CENTER);
+        add(buttonGroup, BorderLayout.NORTH);
+        add(colorPanel, BorderLayout.CENTER);
     }
 
     public Color getCurrentColor() {
@@ -97,6 +95,6 @@ public class ColorChooser extends JPanel {
         return  resultPanel;
     }
     public JToolBar getToolBar() {
-        return this.colorChooser;
+        return this;
     }
 }

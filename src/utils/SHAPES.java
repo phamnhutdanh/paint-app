@@ -1,6 +1,6 @@
 package utils;
 
-public enum TOOLS {
+public enum SHAPES {
     PENCIL,
     LINE,
     RECTANGLE,
