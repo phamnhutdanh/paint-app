@@ -4,16 +4,17 @@ import ui.PaintGui;
 import utils.IconSourcePath;
 import utils.SHAPES;
 
+import javax.sound.sampled.Line;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class PencilButton extends JButton implements ActionListener {
+public class LineButton extends JButton implements ActionListener {
     private PaintGui frame;
-    private ImageIcon ICON = new ImageIcon(this.getClass().getResource(IconSourcePath.PENCIL));
+    private ImageIcon ICON = new ImageIcon(this.getClass().getResource(IconSourcePath.LINE));
 
-    public PencilButton(PaintGui frame) {
-        super("Pencil");
+    public LineButton(PaintGui frame) {
+        super("Line");
         this.setIcon(ICON);
         this.frame = frame;
         this.addActionListener(this);
@@ -21,6 +22,6 @@ public class PencilButton extends JButton implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        frame.getCanvasPanel().setTool(SHAPES.PENCIL);
+        frame.getCanvasPanel().setTool(SHAPES.LINE);
     }
 }

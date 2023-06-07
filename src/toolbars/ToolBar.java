@@ -1,5 +1,9 @@
 package toolbars;
 
+import models.CircleButton;
+import models.LineButton;
+import models.PencilButton;
+import models.RectangleButton;
 import ui.PaintGui;
 import utils.IconSourcePath;
 import utils.SHAPES;
@@ -11,11 +15,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
-public class ToolBar extends JToolBar implements ActionListener {
-    private JButton pencil;
-    private JButton lineButton;
-    private JButton rectangle;
-    private JButton circle;
+public class ToolBar extends JToolBar {
+    private PencilButton pencil;
+    private LineButton lineButton;
+    private RectangleButton rectangle;
+    private CircleButton circle;
     private JButton text;
     private JButton erase;
     private JButton fill;
@@ -58,10 +62,10 @@ public class ToolBar extends JToolBar implements ActionListener {
         open = new JButton("Open", new ImageIcon(this.getClass().getResource(IconSourcePath.OPEN)));
         newFile = new JButton("New", new ImageIcon(this.getClass().getResource(IconSourcePath.NEW_FILE)));
 
-        pencil = new JButton("Pencil", new ImageIcon(this.getClass().getResource(IconSourcePath.PENCIL)));
-        lineButton = new JButton("Line", new ImageIcon(this.getClass().getResource(IconSourcePath.LINE)));
-        rectangle = new JButton("Rectangle", new ImageIcon(this.getClass().getResource(IconSourcePath.RECTANGLE)));
-        circle = new JButton("Circle", new ImageIcon(this.getClass().getResource(IconSourcePath.CIRCLE)));
+        pencil = new PencilButton(frame);
+        lineButton = new LineButton(frame);
+        rectangle = new RectangleButton(frame);
+        circle = new CircleButton(frame);
         text = new JButton("Text", new ImageIcon(this.getClass().getResource(IconSourcePath.TEXT)));
         erase = new JButton("Erase", new ImageIcon(this.getClass().getResource(IconSourcePath.ERASE)));
 
@@ -116,10 +120,5 @@ public class ToolBar extends JToolBar implements ActionListener {
         } else {
             frame.getScrollPane().setSize(width, height);
         }
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
     }
 }

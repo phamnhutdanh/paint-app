@@ -8,12 +8,12 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class PencilButton extends JButton implements ActionListener {
+public class RectangleButton extends JButton implements ActionListener {
     private PaintGui frame;
-    private ImageIcon ICON = new ImageIcon(this.getClass().getResource(IconSourcePath.PENCIL));
+    private ImageIcon ICON = new ImageIcon(this.getClass().getResource(IconSourcePath.RECTANGLE));
 
-    public PencilButton(PaintGui frame) {
-        super("Pencil");
+    public RectangleButton(PaintGui frame) {
+        super("Rectangle");
         this.setIcon(ICON);
         this.frame = frame;
         this.addActionListener(this);
@@ -21,6 +21,6 @@ public class PencilButton extends JButton implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        frame.getCanvasPanel().setTool(SHAPES.PENCIL);
+        frame.getCanvasPanel().setTool(SHAPES.RECTANGLE);
     }
 }

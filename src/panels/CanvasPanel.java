@@ -141,6 +141,7 @@ public class CanvasPanel extends JPanel implements MouseListener,MouseMotionList
                     g2.fillOval(s.getX1(), s.getY1(), s.getX2(), s.getY2());
                 }
             }
+            preview.removeAllElements();
 
         }
     }
