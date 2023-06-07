@@ -56,7 +56,7 @@ public class LineButton extends JButton implements ActionListener, MouseListener
             secondary = currentColor;
         }
 
-        if (canvasPanel.isDragged() && canvasPanel.getActiveTool() == SHAPES.LINE) {
+        if (canvasPanel.isDragged()) {
             canvasPanel.pushStackForShapes(new Shape(
                     canvasPanel.getX1(),
                     canvasPanel.getY1(),
@@ -105,19 +105,19 @@ public class LineButton extends JButton implements ActionListener, MouseListener
         canvasPanel.setY2(e.getY());
         canvasPanel.setDragged(true);
 
-        if (canvasPanel.getActiveTool() == SHAPES.LINE) {
-            canvasPanel.pushStackForPreview(new Shape(canvasPanel.getX1(),
-                    canvasPanel.getY1(),
-                    canvasPanel.getX2(),
-                    canvasPanel.getY2(),
-                    primary,
-                    canvasPanel.getStroke(),
-                    SHAPES.LINE,
-                    secondary,
-                    canvasPanel.isTransparent()));
 
-            canvasPanel.repaint();
-        }
+        canvasPanel.pushStackForPreview(new Shape(canvasPanel.getX1(),
+                canvasPanel.getY1(),
+                canvasPanel.getX2(),
+                canvasPanel.getY2(),
+                primary,
+                canvasPanel.getStroke(),
+                SHAPES.LINE,
+                secondary,
+                canvasPanel.isTransparent()));
+
+        canvasPanel.repaint();
+
     }
 
     @Override

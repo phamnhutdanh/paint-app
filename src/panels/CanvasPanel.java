@@ -286,7 +286,6 @@ public class CanvasPanel extends JPanel implements MouseListener,MouseMotionList
                 shapes.push(new Shape(x1, y1, td.getInputSize(), td.getFont(), primary, stroke, 5, td.getText())); //int x1, int y1, int fontSize, Color color, Font font
             }
 */
-
         }
         else if (activeTool == SHAPES.FILL) {
             floodFill(new Point2D.Double(x1, y1), fillColor);

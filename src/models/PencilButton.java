@@ -88,20 +88,18 @@ public class PencilButton extends JButton implements ActionListener, MouseListen
         canvasPanel.setY2(e.getY());
         canvasPanel.setDragged(true);
 
-        if (canvasPanel.getActiveTool() == SHAPES.PENCIL) {
-            canvasPanel.pushStackForShapes(new Shape(
-                    canvasPanel.getX1(),
-                    canvasPanel.getY1(),
-                    canvasPanel.getX2(),
-                    canvasPanel.getY2(),
-                    primary,
-                    canvasPanel.getStroke(),
-                    SHAPES.LINE,
-                    canvasPanel.getGrouped()));
-           canvasPanel.repaint();
-           canvasPanel.setX1(canvasPanel.getX2());
-           canvasPanel.setY1(canvasPanel.getY2());
-        }
+        canvasPanel.pushStackForShapes(new Shape(
+                canvasPanel.getX1(),
+                canvasPanel.getY1(),
+                canvasPanel.getX2(),
+                canvasPanel.getY2(),
+                primary,
+                canvasPanel.getStroke(),
+                SHAPES.LINE,
+                canvasPanel.getGrouped()));
+        canvasPanel.repaint();
+        canvasPanel.setX1(canvasPanel.getX2());
+        canvasPanel.setY1(canvasPanel.getY2());
     }
 
     @Override

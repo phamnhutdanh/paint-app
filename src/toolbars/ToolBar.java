@@ -20,6 +20,7 @@ public class ToolBar extends JToolBar {
     private LineButton lineButton;
     private RectangleButton rectangle;
     private CircleButton circle;
+
     private JButton text;
     private JButton erase;
     private JButton fill;
@@ -99,12 +100,8 @@ public class ToolBar extends JToolBar {
         addSeparator();
         add(comboBox);
 
-        addListeners();
         frame.getCanvasPanel().setTool(SHAPES.PENCIL);
-    }
 
-    private void addListeners() {
-        // TODO: add event here
     }
     public JToolBar getToolBar() {
         return this;
