@@ -40,7 +40,9 @@ public class CanvasPanel extends JPanel implements MouseListener,MouseMotionList
 
     private int inkPanelWidth;
     private int inkPanelHeight;
-    private ToolBar toolBar;
+
+    private MouseListener mouseListener;
+    private MouseMotionListener mouseMotionListener;
     public CanvasPanel()
     {
         this.setBackground(Color.white);
@@ -64,10 +66,10 @@ public class CanvasPanel extends JPanel implements MouseListener,MouseMotionList
         this.fillColor = Color.white;
         setFocusable(true);
         requestFocus();
-        this.addMouseListener(this);
-        this.addMouseMotionListener(this);
+       // this.addMouseListener(this);
+       // this.addMouseMotionListener(this);
         this.frame = frame;
-        this.toolBar = frame.getToolBar();
+       // this.toolBar = frame.getToolBar();
         this.shapes = new Stack<Shape>();
         this.removed = new Stack<Shape>();
         this.grouped = 1;
@@ -415,6 +417,16 @@ public class CanvasPanel extends JPanel implements MouseListener,MouseMotionList
         clear();
 
     }
+    public void replaceMouseListener(MouseListener mouseListener) {
+        removeMouseListener(this.mouseListener);
+        this.mouseListener = mouseListener;
+        addMouseListener(this.mouseListener);
+    }
+    public void replaceMouseMotionListener(MouseMotionListener mouseMotionListener) {
+        removeMouseMotionListener(this.mouseMotionListener);
+        this.mouseMotionListener = mouseMotionListener;
+        addMouseMotionListener(this.mouseMotionListener);
+    }
     public void setInkPanelWidth(int width)
     {
         this.inkPanelWidth = width;
@@ -473,6 +485,12 @@ public class CanvasPanel extends JPanel implements MouseListener,MouseMotionList
     }
     public void addGroup(int number){
         grouped +=number;
+    }
+    public SHAPES getActiveTool(){
+        return  activeTool;
+    }
+    public int getGrouped() {
+        return grouped;
     }
     public void removedALl(){
         removed.removeAllElements();
