@@ -296,7 +296,6 @@ public class CanvasPanel extends JPanel implements MouseListener,MouseMotionList
 
     }
 
-
     @Override
     public void mouseMoved(MouseEvent e) {
         //printCoordinates(e);
@@ -312,10 +311,6 @@ public class CanvasPanel extends JPanel implements MouseListener,MouseMotionList
 
     @Override
     public void mouseExited(MouseEvent e) {
-    }
-
-    public void setTool(SHAPES tool) {
-        this.activeTool = tool;
     }
 
     public void setImage(BufferedImage image) {
@@ -336,57 +331,6 @@ public class CanvasPanel extends JPanel implements MouseListener,MouseMotionList
         graphics2D.setColor(currentColor);
     }
 
-
-    public void undo(){
-        if(shapes.size()> 0 && shapes.peek().getGroup() == 0){
-            removed.push(shapes.pop());
-            repaint();
-        }
-        else if (shapes.size() > 0 && shapes.peek().getGroup() != 0){
-
-            Shape lastRemoved = shapes.pop();
-            removed.push(lastRemoved);
-
-            while (shapes.isEmpty() == false && shapes.peek().getGroup() == lastRemoved.getGroup() ){
-                removed.push(shapes.pop());
-                repaint();
-
-            }
-
-        }
-    }
-    public void redo(){
-        if(removed.size()>0 && removed.peek().getGroup() == 0){
-            shapes.push(removed.pop());
-            repaint();
-        }else if (removed.size() > 0 && removed.peek().getGroup() != 0){
-
-            Shape lastRemoved = removed.pop();
-            shapes.push(lastRemoved);
-
-            while (removed.isEmpty() == false && removed.peek().getGroup() == lastRemoved.getGroup() ){
-                shapes.push(removed.pop());
-                repaint();
-
-            }
-
-        }
-    }
-    public void setColor(Color c){
-        currentColor = c;
-        graphics2D.setColor(c);
-
-    }
-    public void setFillColor(Color c){
-        this.fillColor = c;
-    }
-    public void setThickness(float f){
-        stroke = new BasicStroke(f);
-        graphics2D.setStroke(stroke);
-    }
-    public void setTransparency(Boolean b){
-        this.transparent = b;
-    }
     public void floodFill(Point2D.Double point, Color fillColor) {
         Color targetColor = new Color(canvas.getRGB((int)point.getX(), (int)point.getY()));
         Queue<Point2D.Double> queue = new LinkedList<Point2D.Double>();
@@ -425,6 +369,23 @@ public class CanvasPanel extends JPanel implements MouseListener,MouseMotionList
         removeMouseMotionListener(this.mouseMotionListener);
         this.mouseMotionListener = mouseMotionListener;
         addMouseMotionListener(this.mouseMotionListener);
+    }
+    public void setColor(Color c){
+        currentColor = c;
+        graphics2D.setColor(c);
+    }
+    public void setFillColor(Color c){
+        this.fillColor = c;
+    }
+    public void setThickness(float f){
+        stroke = new BasicStroke(f);
+        graphics2D.setStroke(stroke);
+    }
+    public void setTool(SHAPES tool) {
+        this.activeTool = tool;
+    }
+    public void setTransparency(Boolean b){
+        this.transparent = b;
     }
     public void setInkPanelWidth(int width)
     {
@@ -482,6 +443,13 @@ public class CanvasPanel extends JPanel implements MouseListener,MouseMotionList
     public void pushStackForShapes(Shape shape){
         shapes.push(shape);
     }
+    public void pushStackForRemoved(Shape shape) {removed.push(shape);}
+    public Shape popShapes() {return shapes.pop();}
+    public Shape popRemoved() {return removed.pop();}
+    public Stack<Shape> getShapes() {return shapes;}
+    public Stack<Shape> getPreview() {return preview;}
+    public Stack<Shape> getRemoved() {return removed;}
+
     public void addGroup(int number){
         grouped +=number;
     }

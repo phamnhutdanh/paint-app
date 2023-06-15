@@ -8,8 +8,6 @@ import utils.SHAPES;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 
 public class ToolBar extends JToolBar {
@@ -18,11 +16,12 @@ public class ToolBar extends JToolBar {
     private RectangleButton rectangleButton;
     private CircleButton circleButton;
     private ClearButton clearButton;
+    private UndoButton undoButton;
+    private RedoButton redoButton;
     private JButton text;
     private JButton erase;
     private JButton fill;
-    private JButton undo;
-    private JButton redo;
+
 
     private Dimension newDimensions = new Dimension(700, 500);
     private JButton save;
@@ -67,8 +66,8 @@ public class ToolBar extends JToolBar {
         text = new JButton("Text", new ImageIcon(this.getClass().getResource(IconSourcePath.TEXT)));
         erase = new JButton("Erase", new ImageIcon(this.getClass().getResource(IconSourcePath.ERASE)));
 
-        undo = new JButton("Undo", new ImageIcon(this.getClass().getResource(IconSourcePath.UNDO)));
-        redo = new JButton("Redo", new ImageIcon(this.getClass().getResource(IconSourcePath.REDO)));
+        undoButton = new UndoButton(frame);
+        redoButton = new RedoButton(frame);
         clearButton = new ClearButton(frame);
 
         String[] items = {"Line Width", "1", "2", "3", "4", "5", "6", "7", "8"};
@@ -92,8 +91,8 @@ public class ToolBar extends JToolBar {
         add(erase);
         add(clearButton);
         addSeparator();
-        add(undo);
-        add(redo);
+        add(undoButton);
+        add(redoButton);
         addSeparator();
         add(comboBox);
 
