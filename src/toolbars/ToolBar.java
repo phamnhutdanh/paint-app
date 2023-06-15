@@ -1,9 +1,6 @@
 package toolbars;
 
-import models.CircleButton;
-import models.LineButton;
-import models.PencilButton;
-import models.RectangleButton;
+import models.*;
 import ui.PaintGui;
 import utils.IconSourcePath;
 import utils.SHAPES;
@@ -16,17 +13,17 @@ import java.awt.event.ActionListener;
 import java.io.File;
 
 public class ToolBar extends JToolBar {
-    private PencilButton pencil;
+    private PencilButton pencilButton;
     private LineButton lineButton;
-    private RectangleButton rectangle;
-    private CircleButton circle;
-
+    private RectangleButton rectangleButton;
+    private CircleButton circleButton;
+    private ClearButton clearButton;
     private JButton text;
     private JButton erase;
     private JButton fill;
     private JButton undo;
     private JButton redo;
-    private JButton clear;
+
     private Dimension newDimensions = new Dimension(700, 500);
     private JButton save;
     private JButton open;
@@ -63,16 +60,16 @@ public class ToolBar extends JToolBar {
         open = new JButton("Open", new ImageIcon(this.getClass().getResource(IconSourcePath.OPEN)));
         newFile = new JButton("New", new ImageIcon(this.getClass().getResource(IconSourcePath.NEW_FILE)));
 
-        pencil = new PencilButton(frame);
+        pencilButton = new PencilButton(frame);
         lineButton = new LineButton(frame);
-        rectangle = new RectangleButton(frame);
-        circle = new CircleButton(frame);
+        rectangleButton = new RectangleButton(frame);
+        circleButton = new CircleButton(frame);
         text = new JButton("Text", new ImageIcon(this.getClass().getResource(IconSourcePath.TEXT)));
         erase = new JButton("Erase", new ImageIcon(this.getClass().getResource(IconSourcePath.ERASE)));
 
         undo = new JButton("Undo", new ImageIcon(this.getClass().getResource(IconSourcePath.UNDO)));
         redo = new JButton("Redo", new ImageIcon(this.getClass().getResource(IconSourcePath.REDO)));
-        clear = new JButton("Clear", new ImageIcon(this.getClass().getResource(IconSourcePath.CLEAR)));
+        clearButton = new ClearButton(frame);
 
         String[] items = {"Line Width", "1", "2", "3", "4", "5", "6", "7", "8"};
 
@@ -86,14 +83,14 @@ public class ToolBar extends JToolBar {
         add(open);
         add(save);
         addSeparator();
-        add(pencil);
+        add(pencilButton);
         add(lineButton);
-        add(rectangle);
-        add(circle);
+        add(rectangleButton);
+        add(circleButton);
         addSeparator();
         add(text);
         add(erase);
-        add(clear);
+        add(clearButton);
         addSeparator();
         add(undo);
         add(redo);
