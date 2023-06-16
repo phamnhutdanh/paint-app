@@ -1,4 +1,4 @@
-package toolbars;
+package coordinatebars;
 
 import panels.CanvasPanel;
 import ui.PaintGui;

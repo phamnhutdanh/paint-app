@@ -1,5 +1,6 @@
-package models;
+package toolbars;
 
+import models.Shape;
 import panels.CanvasPanel;
 import ui.PaintGui;
 import utils.IconSourcePath;

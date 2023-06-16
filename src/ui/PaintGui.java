@@ -2,7 +2,7 @@ package ui;
 
 import panels.CanvasPanel;
 import toolbars.ColorChooser;
-import toolbars.CoordinateBar;
+import coordinatebars.CoordinateBar;
 import toolbars.ToolBar;
 
 import javax.swing.*;

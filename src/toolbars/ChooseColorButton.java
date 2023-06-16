@@ -1,4 +1,4 @@
-package models;
+package toolbars;
 
 import toolbars.ColorChooser;
 import ui.PaintGui;

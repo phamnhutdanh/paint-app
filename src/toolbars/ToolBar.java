@@ -1,6 +1,5 @@
 package toolbars;
 
-import models.*;
 import ui.PaintGui;
 import utils.IconSourcePath;
 import utils.SHAPES;

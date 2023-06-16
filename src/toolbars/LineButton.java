@@ -1,5 +1,6 @@
-package models;
+package toolbars;
 
+import models.Shape;
 import panels.CanvasPanel;
 import ui.PaintGui;
 import utils.IconSourcePath;
@@ -9,12 +10,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class PencilButton extends JButton implements ActionListener, MouseListener, MouseMotionListener {
+public class LineButton extends JButton implements ActionListener, MouseListener, MouseMotionListener {
     private PaintGui frame;
-    private ImageIcon ICON = new ImageIcon(this.getClass().getResource(IconSourcePath.PENCIL));
+    private ImageIcon ICON = new ImageIcon(this.getClass().getResource(IconSourcePath.LINE));
 
-    public PencilButton(PaintGui frame) {
-        super("Pencil");
+    public LineButton(PaintGui frame) {
+        super("Line");
         this.setIcon(ICON);
         this.frame = frame;
         this.addActionListener(this);
@@ -22,7 +23,7 @@ public class PencilButton extends JButton implements ActionListener, MouseListen
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        frame.getCanvasPanel().setTool(SHAPES.PENCIL);
+        frame.getCanvasPanel().setTool(SHAPES.LINE);
 
         frame.getCanvasPanel().replaceMouseListener(this);
         frame.getCanvasPanel().replaceMouseMotionListener(this);
@@ -42,6 +43,7 @@ public class PencilButton extends JButton implements ActionListener, MouseListen
 
     @Override
     public void mouseReleased(MouseEvent e) {
+
         CanvasPanel canvasPanel = frame.getCanvasPanel();
         Color currentColor = canvasPanel.getCurrentColor();
         Color fillColor = canvasPanel.getFillColor();
@@ -55,9 +57,25 @@ public class PencilButton extends JButton implements ActionListener, MouseListen
             secondary = currentColor;
         }
 
+        if (canvasPanel.isDragged()) {
+            canvasPanel.pushStackForShapes(new models.Shape(
+                    canvasPanel.getX1(),
+                    canvasPanel.getY1(),
+                    canvasPanel.getX2(),
+                    canvasPanel.getY2(),
+                    primary,
+                    canvasPanel.getStroke(),
+                    SHAPES.LINE,
+                    fillColor,
+                    canvasPanel.isTransparent()));
+            canvasPanel.repaint();
+            //graphics2D.drawLine(x1, y1, x2, y2);
+        }
+
         canvasPanel.setDragged(false);
         canvasPanel.removedALl();
         canvasPanel.repaint();
+
     }
 
     @Override
@@ -82,24 +100,24 @@ public class PencilButton extends JButton implements ActionListener, MouseListen
             primary = secondary;
             secondary = currentColor;
         }
-        // printCoordinates(e);
 
         canvasPanel.setX2(e.getX());
         canvasPanel.setY2(e.getY());
         canvasPanel.setDragged(true);
 
-        canvasPanel.pushStackForShapes(new Shape(
-                canvasPanel.getX1(),
+
+        canvasPanel.pushStackForPreview(new Shape(canvasPanel.getX1(),
                 canvasPanel.getY1(),
                 canvasPanel.getX2(),
                 canvasPanel.getY2(),
                 primary,
                 canvasPanel.getStroke(),
                 SHAPES.LINE,
-                canvasPanel.getGrouped()));
+                secondary,
+                canvasPanel.isTransparent()));
+
         canvasPanel.repaint();
-        canvasPanel.setX1(canvasPanel.getX2());
-        canvasPanel.setY1(canvasPanel.getY2());
+
     }
 
     @Override

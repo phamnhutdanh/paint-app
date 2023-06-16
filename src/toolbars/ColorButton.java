@@ -1,4 +1,4 @@
-package models;
+package toolbars;
 
 import panels.CanvasPanel;
 import toolbars.ColorChooser;

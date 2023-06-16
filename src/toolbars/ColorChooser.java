@@ -1,7 +1,5 @@
 package toolbars;
 
-import models.ChooseColorButton;
-import models.ColorButton;
 import ui.PaintGui;
 import utils.IconSourcePath;
 

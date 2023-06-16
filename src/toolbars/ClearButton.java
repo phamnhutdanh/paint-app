@@ -1,4 +1,4 @@
-package models;
+package toolbars;
 
 import ui.PaintGui;
 import utils.IconSourcePath;
