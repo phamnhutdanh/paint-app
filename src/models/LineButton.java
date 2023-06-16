@@ -99,7 +99,6 @@ public class LineButton extends JButton implements ActionListener, MouseListener
             primary = secondary;
             secondary = currentColor;
         }
-        // printCoordinates(e);
 
         canvasPanel.setX2(e.getX());
         canvasPanel.setY2(e.getY());

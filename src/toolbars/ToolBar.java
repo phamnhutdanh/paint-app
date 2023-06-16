@@ -18,8 +18,10 @@ public class ToolBar extends JToolBar {
     private ClearButton clearButton;
     private UndoButton undoButton;
     private RedoButton redoButton;
+    private EraserButton eraserButton;
+    private ChooseLineWidthComboBox chooseLineWidthComboBox;
+
     private JButton text;
-    private JButton erase;
     private JButton fill;
 
 
@@ -28,7 +30,6 @@ public class ToolBar extends JToolBar {
     private JButton open;
     private JButton newFile;
     private JFileChooser fc;
-    private JComboBox comboBox;
     private File f;
     private PaintGui frame;
 
@@ -64,17 +65,13 @@ public class ToolBar extends JToolBar {
         rectangleButton = new RectangleButton(frame);
         circleButton = new CircleButton(frame);
         text = new JButton("Text", new ImageIcon(this.getClass().getResource(IconSourcePath.TEXT)));
-        erase = new JButton("Erase", new ImageIcon(this.getClass().getResource(IconSourcePath.ERASE)));
+        eraserButton = new EraserButton(frame);
 
         undoButton = new UndoButton(frame);
         redoButton = new RedoButton(frame);
         clearButton = new ClearButton(frame);
 
-        String[] items = {"Line Width", "1", "2", "3", "4", "5", "6", "7", "8"};
-
-        comboBox = new JComboBox(items);
-        comboBox.setMaximumSize(new Dimension(100, 25));
-
+        chooseLineWidthComboBox = new ChooseLineWidthComboBox(frame);
         // ----------------
         // add buttons to the tool bar
         // ----------------
@@ -88,13 +85,13 @@ public class ToolBar extends JToolBar {
         add(circleButton);
         addSeparator();
         add(text);
-        add(erase);
+        add(eraserButton);
         add(clearButton);
         addSeparator();
         add(undoButton);
         add(redoButton);
         addSeparator();
-        add(comboBox);
+        add(chooseLineWidthComboBox);
 
         frame.getCanvasPanel().setTool(SHAPES.PENCIL);
 
