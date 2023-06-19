@@ -20,24 +20,29 @@ public class PaintGui extends JFrame {
     private JScrollPane scrollPane;
     private CanvasPanel canvas;
 
-    private final int CONTENT_PANE_WIDTH = 1200;
-    private final int CONTENT_PANE_HEIGHT = 700;
+    private final int CONTENT_PANE_WIDTH = 900;
+    private final int CONTENT_PANE_HEIGHT = 600;
 
     private int inkPanelWidth;
     private int inkPanelHeight;
     private final Color background = Color.GRAY;
 
     public PaintGui() {
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        inkPanelWidth = dim.width - 200;
+        inkPanelHeight = dim.height - 160;
+
         contentPane = new JPanel();
         canvas = new CanvasPanel(0, this, inkPanelWidth, inkPanelHeight);
         toolBar = new ToolBar(this);
         coordinateBar = new CoordinateBar(this);
         colorChooser = new ColorChooser(this);
         init();
+
     }
 
     public void drawUI() {
-        setTitle("Draw");
+        setTitle("Paint App");
         setBackground(new Color(39, 174, 96));
         pack();
 
@@ -49,10 +54,6 @@ public class PaintGui extends JFrame {
     }
 
     private void init() {
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        inkPanelWidth = dim.width - 150;
-        inkPanelHeight = dim.height - 160;
-
         contentPane.setLayout(null);
 
         initCanvas();
@@ -68,7 +69,6 @@ public class PaintGui extends JFrame {
     }
 
     private void initCanvas() {
-
         scrollPane = new JScrollPane();
         scrollPane.setLocation(10, 10);
         scrollPane.setSize(inkPanelWidth, inkPanelHeight);
@@ -108,7 +108,7 @@ public class PaintGui extends JFrame {
     }
 
     public JScrollPane getScrollPane() {
-        return this.scrollPane;
+        return scrollPane;
     }
 
     public CoordinateBar getCoordinateBar() {

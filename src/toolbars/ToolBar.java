@@ -5,9 +5,7 @@ import utils.IconSourcePath;
 import utils.SHAPES;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.io.File;
 
 public class ToolBar extends JToolBar {
     private PencilButton pencilButton;
@@ -20,23 +18,19 @@ public class ToolBar extends JToolBar {
     private EraserButton eraserButton;
     private ChooseLineWidthComboBox chooseLineWidthComboBox;
 
+    private NewFileButton newFileButton;
+    private SaveFileButton saveFileButton;
+    private OpenFileButton openFileButton;
+
+
     private JButton text;
     private JButton fill;
-
-
     private Dimension newDimensions = new Dimension(700, 500);
-    private JButton save;
-    private JButton open;
-    private JButton newFile;
-    private JFileChooser fc;
-    private File f;
     private PaintGui frame;
 
     public ToolBar(PaintGui frame) {
         super(JToolBar.HORIZONTAL);
         this.frame = frame;
-        fc = new JFileChooser(new File("."));
-        fc.setFileFilter(new FileNameExtensionFilter("Image Files", "jpg", "png"));
         initializeToolBar();
     }
 
@@ -44,7 +38,6 @@ public class ToolBar extends JToolBar {
         // ----------------
         // create buttons for the tool bar
         // ----------------
-
         //toolBar = new JToolBar(JToolBar.HORIZONTAL);
         setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Color.BLACK));
         setFloatable(false);
@@ -52,12 +45,10 @@ public class ToolBar extends JToolBar {
         flowLayout.setAlignment(FlowLayout.LEFT);
         setLayout(flowLayout);
 
-
         //toolBar.setBackground( new Color(0, 153, 204));
-
-        save = new JButton("Save", new ImageIcon(this.getClass().getResource(IconSourcePath.SAVE)));
-        open = new JButton("Open", new ImageIcon(this.getClass().getResource(IconSourcePath.OPEN)));
-        newFile = new JButton("New", new ImageIcon(this.getClass().getResource(IconSourcePath.NEW_FILE)));
+        newFileButton = new NewFileButton(frame);
+        openFileButton = new OpenFileButton(frame);
+        saveFileButton = new SaveFileButton(frame);
 
         pencilButton = new PencilButton(frame);
         lineButton = new LineButton(frame);
@@ -74,9 +65,9 @@ public class ToolBar extends JToolBar {
         // ----------------
         // add buttons to the tool bar
         // ----------------
-        add(newFile);
-        add(open);
-        add(save);
+        add(newFileButton);
+        add(openFileButton);
+        add(saveFileButton);
         addSeparator();
         add(pencilButton);
         add(lineButton);
@@ -93,21 +84,5 @@ public class ToolBar extends JToolBar {
         add(chooseLineWidthComboBox);
 
         frame.getCanvasPanel().setTool(SHAPES.PENCIL);
-
-    }
-    public JToolBar getToolBar() {
-        return this;
-    }
-    private void setDimensions(int width, int height) {
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        if (height > dim.height - 160 && width > dim.width - 150) {
-            frame.getScrollPane().setSize(dim.width - 150, dim.height - 160);
-        } else if (width > dim.width - 150) {
-            frame.getScrollPane().setSize(dim.width - 150, height);
-        } else if (height > dim.height - 160) {
-            frame.getScrollPane().setSize(width, dim.height - 160);
-        } else {
-            frame.getScrollPane().setSize(width, height);
-        }
     }
 }
