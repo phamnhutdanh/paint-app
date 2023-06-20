@@ -18,14 +18,9 @@ public class ToolBar extends JToolBar {
     private EraserButton eraserButton;
     private ChooseLineWidthComboBox chooseLineWidthComboBox;
 
-    private NewFileButton newFileButton;
-    private SaveFileButton saveFileButton;
-    private OpenFileButton openFileButton;
-
 
     private JButton text;
     private JButton fill;
-    private Dimension newDimensions = new Dimension(700, 500);
     private PaintGui frame;
 
     public ToolBar(PaintGui frame) {
@@ -46,9 +41,6 @@ public class ToolBar extends JToolBar {
         setLayout(flowLayout);
 
         //toolBar.setBackground( new Color(0, 153, 204));
-        newFileButton = new NewFileButton(frame);
-        openFileButton = new OpenFileButton(frame);
-        saveFileButton = new SaveFileButton(frame);
 
         pencilButton = new PencilButton(frame);
         lineButton = new LineButton(frame);
@@ -65,9 +57,6 @@ public class ToolBar extends JToolBar {
         // ----------------
         // add buttons to the tool bar
         // ----------------
-        add(newFileButton);
-        add(openFileButton);
-        add(saveFileButton);
         addSeparator();
         add(pencilButton);
         add(lineButton);

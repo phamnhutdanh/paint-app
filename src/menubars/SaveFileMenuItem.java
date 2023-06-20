@@ -1,4 +1,4 @@
-package toolbars;
+package menubars;
 
 import ui.PaintGui;
 import utils.IconSourcePath;
@@ -13,11 +13,11 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class SaveFileButton extends JButton implements ActionListener {
+public class SaveFileMenuItem extends JMenuItem implements ActionListener {
     private PaintGui frame;
     private ImageIcon ICON = new ImageIcon(this.getClass().getResource(IconSourcePath.SAVE));
     private JFileChooser fc;
-    public SaveFileButton(PaintGui frame) {
+    public SaveFileMenuItem(PaintGui frame) {
         super("Save file");
         this.setIcon(ICON);
         this.frame = frame;

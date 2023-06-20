@@ -1,4 +1,4 @@
-package toolbars;
+package menubars;
 
 import ui.PaintGui;
 import utils.IconSourcePath;
@@ -13,12 +13,12 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
-public class OpenFileButton extends JButton implements ActionListener {
+public class OpenFileMenuItem extends JMenuItem implements ActionListener {
     private PaintGui frame;
     private ImageIcon ICON = new ImageIcon(this.getClass().getResource(IconSourcePath.OPEN));
     private JFileChooser fc;
     private Dimension newDimensions = new Dimension(700, 500);
-    public OpenFileButton(PaintGui frame) {
+    public OpenFileMenuItem(PaintGui frame) {
         super("Open file");
         this.setIcon(ICON);
         this.frame = frame;

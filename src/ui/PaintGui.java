@@ -1,5 +1,6 @@
 package ui;
 
+import menubars.MenuBar;
 import panels.CanvasPanel;
 import toolbars.ColorChooser;
 import coordinatebars.CoordinateBar;
@@ -11,7 +12,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class PaintGui extends JFrame {
-    private JMenuBar menuBar;
+    private MenuBar menuBar;
     private ToolBar toolBar;
     private ColorChooser colorChooser;
     private CoordinateBar coordinateBar;
@@ -30,13 +31,14 @@ public class PaintGui extends JFrame {
     public PaintGui() {
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         inkPanelWidth = dim.width - 200;
-        inkPanelHeight = dim.height - 160;
+        inkPanelHeight = dim.height - 200;
 
         contentPane = new JPanel();
         canvas = new CanvasPanel(0, this, inkPanelWidth, inkPanelHeight);
         toolBar = new ToolBar(this);
         coordinateBar = new CoordinateBar(this);
         colorChooser = new ColorChooser(this);
+        menuBar = new MenuBar(this);
         init();
 
     }
