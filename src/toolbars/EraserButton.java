@@ -12,21 +12,46 @@ import java.awt.event.*;
 
 public class EraserButton extends JButton implements ActionListener, MouseListener, MouseMotionListener {
     private PaintGui frame;
+    private CanvasPanel canvasPanel;
     private ImageIcon ICON = new ImageIcon(this.getClass().getResource(IconSourcePath.ERASE));
 
     public EraserButton(PaintGui frame) {
         super("Eraser");
         this.setIcon(ICON);
         this.frame = frame;
+        canvasPanel = frame.getCanvasPanel();
         this.addActionListener(this);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        frame.getCanvasPanel().setTool(SHAPES.ERASER);
+        frame.getCanvasPanel().shapeType = Shape.ERASER;
 
         frame.getCanvasPanel().replaceMouseListener(this);
         frame.getCanvasPanel().replaceMouseMotionListener(this);
+    }
+    @Override
+    public void mouseMoved(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        if (( canvasPanel.mouseDraggedX != (int) (e.getX() /  canvasPanel.widthScale) ||
+                canvasPanel.mouseDraggedY != (int) (e.getY() /  canvasPanel.widthScale))) {
+            canvasPanel.shapes.add(new Shape((int) (e.getX() /  canvasPanel.widthScale),
+                    (int) (e.getY() /  canvasPanel.widthScale),
+                    canvasPanel.canvasColor,
+                    canvasPanel.shapeThickness,
+                    canvasPanel.shapeType));
+
+        }
+        canvasPanel.mouseDraggedX = (int) (e.getX() /  canvasPanel.widthScale);
+        canvasPanel.mouseDraggedY = (int) (e.getY() /  canvasPanel.widthScale);
+        canvasPanel.mouseDragged = true;
+        canvasPanel.repaint();
+    }
+    @Override
+    public void mouseExited(MouseEvent e) {
     }
 
     @Override
@@ -36,13 +61,36 @@ public class EraserButton extends JButton implements ActionListener, MouseListen
 
     @Override
     public void mousePressed(MouseEvent e) {
-        frame.getCanvasPanel().setX1(e.getX());
-        frame.getCanvasPanel().setY1(e.getY());
+        canvasPanel.shapesRedo.clear();
+        canvasPanel.filledTempsRedo.clear();
+        canvasPanel.filledTempDelayRedo.clear();
+
+        canvasPanel.mousePressedX = (int) (e.getX() / canvasPanel.widthScale);
+        canvasPanel.mousePressedY = (int) (e.getY() / canvasPanel.widthScale);
+
+        canvasPanel.shapes.add(new Shape(canvasPanel.mousePressedX,
+                canvasPanel.mousePressedY,
+                canvasPanel.canvasColor,
+                canvasPanel.shapeThickness,
+                canvasPanel.shapeType));
+        canvasPanel.filledTempDelay.add(true);
+        canvasPanel.shapes.get(canvasPanel.shapes.size() - 1).pressed = true;
+        canvasPanel.repaint();
+
+        canvasPanel.mousePressed = true;
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
 
+        canvasPanel.mousePressed = false;
+        if (!canvasPanel.shapes.isEmpty()) {
+            canvasPanel.shapes.get(canvasPanel.shapes.size() - 1).setEndOfShape();
+            canvasPanel.filledTempDelay.add(true);
+        }
+        if (canvasPanel.mouseDragged) {
+            canvasPanel.mouseDragged = false;
+        }
     }
 
     @Override
@@ -50,40 +98,4 @@ public class EraserButton extends JButton implements ActionListener, MouseListen
 
     }
 
-    @Override
-    public void mouseExited(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseDragged(MouseEvent e) {
-        CanvasPanel canvasPanel = frame.getCanvasPanel();
-        Color currentColor = canvasPanel.getCurrentColor();
-        Color fillColor = canvasPanel.getFillColor();
-
-        Color primary = currentColor;
-        Color secondary = fillColor;
-        if (SwingUtilities.isRightMouseButton(e)) {
-            primary = secondary;
-            secondary = currentColor;
-        }
-        canvasPanel.setX2(e.getX());
-        canvasPanel.setY2(e.getY());
-        canvasPanel.setDragged(true);
-
-        int x1 = canvasPanel.getX1(), x2 = canvasPanel.getX2(),
-                y1 = canvasPanel.getY1(), y2 = canvasPanel.getY2();
-        BasicStroke stroke = canvasPanel.getStroke();
-        boolean transparent = canvasPanel.isTransparent();
-        int grouped = canvasPanel.getGrouped();
-        canvasPanel.pushStackForShapes(new Shape(x1, y1, x2, y2,Color.white,stroke, SHAPES.LINE,grouped));
-           canvasPanel.repaint();
-           canvasPanel.setX1(x2);
-           canvasPanel.setY1(y2);
-    }
-
-    @Override
-    public void mouseMoved(MouseEvent e) {
-
-    }
 }

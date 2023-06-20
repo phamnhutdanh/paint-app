@@ -22,10 +22,10 @@ public class NewFileMenuItem extends JMenuItem implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        newFile();
+        //newFile();
     }
 
-    private void newFile()
+/*    private void newFile()
     {
         JFrame newFileFrame = new JFrame();
         newFileFrame.setTitle("New");
@@ -103,5 +103,5 @@ public class NewFileMenuItem extends JMenuItem implements ActionListener {
         newFileFrame.add(height);
         newFileFrame.add(okay);
         newFileFrame.add(cancel);
-    }
+    }*/
 }

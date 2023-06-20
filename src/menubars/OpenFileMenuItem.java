@@ -34,12 +34,12 @@ public class OpenFileMenuItem extends JMenuItem implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (fc.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION) {
+       /* if (fc.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION) {
             frame.getCanvasPanel().setFile(fc.getSelectedFile());
             openFile(frame.getCanvasPanel().getFile());
-        }
+        }*/
     }
-    private void openFile(File f) {
+ /*   private void openFile(File f) {
 
         // ----------------
         // update the contents of the jlabel to be the image from the selected file
@@ -55,5 +55,5 @@ public class OpenFileMenuItem extends JMenuItem implements ActionListener {
         }
 
 
-    }
+    }*/
 }

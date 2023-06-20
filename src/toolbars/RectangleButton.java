@@ -12,22 +12,25 @@ import java.awt.event.*;
 
 public class RectangleButton extends JButton implements ActionListener, MouseListener, MouseMotionListener {
     private PaintGui frame;
+    private CanvasPanel canvasPanel;
     private ImageIcon ICON = new ImageIcon(this.getClass().getResource(IconSourcePath.RECTANGLE));
 
     public RectangleButton(PaintGui frame) {
         super("Rectangle");
         this.setIcon(ICON);
         this.frame = frame;
+        canvasPanel = frame.getCanvasPanel();
         this.addActionListener(this);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        frame.getCanvasPanel().setTool(SHAPES.RECTANGLE);
+        frame.getCanvasPanel().shapeType = Shape.RECTANGLE;
 
         frame.getCanvasPanel().replaceMouseListener(this);
         frame.getCanvasPanel().replaceMouseMotionListener(this);
     }
+
 
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -36,50 +39,38 @@ public class RectangleButton extends JButton implements ActionListener, MouseLis
 
     @Override
     public void mousePressed(MouseEvent e) {
-        frame.getCanvasPanel().setX1(e.getX());
-        frame.getCanvasPanel().setY1(e.getY());
+        //We have to clear redo if shapetype not equal color picker
+
+        canvasPanel.shapesRedo.clear();
+        canvasPanel.filledTempsRedo.clear();
+        canvasPanel.filledTempDelayRedo.clear();
+
+        canvasPanel.mousePressedX = (int) (e.getX() /  canvasPanel.widthScale);
+        canvasPanel.mousePressedY = (int) (e.getY() /  canvasPanel.widthScale);
+
+        canvasPanel.mousePressed = true;
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        CanvasPanel canvasPanel = frame.getCanvasPanel();
-        Color currentColor = canvasPanel.getCurrentColor();
-        Color fillColor = canvasPanel.getFillColor();
 
+        canvasPanel.mousePressed = false;
+        canvasPanel.shapes.add(new Shape(canvasPanel.startX,
+                canvasPanel.startY,
+                canvasPanel.width,
+                canvasPanel.height,
+                canvasPanel.shapeColor,
+                canvasPanel.shapeThickness,
+                canvasPanel.shapeType));
 
-        canvasPanel.addGroup(1);
-
-        Color primary = currentColor;
-        Color secondary = fillColor;
-        if (SwingUtilities.isRightMouseButton(e)) {
-            primary = secondary;
-            secondary = currentColor;
+        if (!canvasPanel.shapes.isEmpty()) {
+            canvasPanel.shapes.get(canvasPanel.shapes.size() - 1).setEndOfShape();
+            canvasPanel.filledTempDelay.add(true);
         }
 
-
-        int x1 = canvasPanel.getX1(), x2 = canvasPanel.getX2(),
-                y1 = canvasPanel.getY1(), y2 = canvasPanel.getY2();
-        BasicStroke stroke = canvasPanel.getStroke();
-        boolean transparent = canvasPanel.isTransparent();
-        if (canvasPanel.isDragged()) {
-            if (x1 < x2 && y1 < y2) {
-                canvasPanel.pushStackForShapes(new models.Shape(x1, y1, x2 - x1, y2 - y1, primary, stroke, SHAPES.RECTANGLE, secondary, transparent));
-                //graphics2D.draw(new Rectangle2D.Double(x1, y1, x2 - x1, y2 - y1));
-            } else if (x2 < x1 && y1 < y2) {
-                canvasPanel.pushStackForShapes(new models.Shape(x2, y1, x1 - x2, y2 - y1, primary, stroke, SHAPES.RECTANGLE, secondary, transparent));
-                //	graphics2D.draw(new Rectangle2D.Double(x2, y1, x1 - x2, y2 - y1));
-            } else if (x1 < x2 && y2 < y1) {
-                canvasPanel.pushStackForShapes(new models.Shape(x1, y2, x2 - x1, y1 - y2, primary, stroke, SHAPES.RECTANGLE, secondary, transparent));
-                //graphics2D.draw(new Rectangle2D.Double(x1, y2, x2 - x1, y1 - y2));
-            } else if (x2 < x1 && y2 < y1) {
-                canvasPanel.pushStackForShapes(new models.Shape(x2, y2, x1 - x2, y1 - y2, primary, stroke, SHAPES.RECTANGLE, secondary, transparent));
-                //	graphics2D.draw(new Rectangle2D.Double(x2, y2, x1 - x2, y1 - y2));
-            }
+        if (canvasPanel.mouseDragged) {
+            canvasPanel.mouseDragged = false;
         }
-
-        canvasPanel.setDragged(false);
-        canvasPanel.removedALl();
-        canvasPanel.repaint();
     }
 
     @Override
@@ -89,51 +80,19 @@ public class RectangleButton extends JButton implements ActionListener, MouseLis
 
     @Override
     public void mouseExited(MouseEvent e) {
-
+     //   canvasPanel.notifyMousePositionListener();
     }
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        CanvasPanel canvasPanel = frame.getCanvasPanel();
-        Color currentColor = canvasPanel.getCurrentColor();
-        Color fillColor = canvasPanel.getFillColor();
-
-        Color primary = currentColor;
-        Color secondary = fillColor;
-        if (SwingUtilities.isRightMouseButton(e)) {
-            primary = secondary;
-            secondary = currentColor;
-        }
-        // printCoordinates(e);
-
-        canvasPanel.setX2(e.getX());
-        canvasPanel.setY2(e.getY());
-        canvasPanel.setDragged(true);
-
-        int x1 = canvasPanel.getX1(), x2 = canvasPanel.getX2(),
-                y1 = canvasPanel.getY1(), y2 = canvasPanel.getY2();
-        BasicStroke stroke = canvasPanel.getStroke();
-        boolean transparent = canvasPanel.isTransparent();
-
-        if (x1 < x2 && y1 < y2) {
-            canvasPanel.pushStackForPreview(new models.Shape(x1, y1, x2 - x1, y2 - y1, primary, stroke, SHAPES.RECTANGLE, secondary, transparent));
-            //graphics2D.draw(new Rectangle2D.Double(x1, y1, x2 - x1, y2 - y1));
-        } else if (x2 < x1 && y1 < y2) {
-            canvasPanel.pushStackForPreview(new models.Shape(x2, y1, x1 - x2, y2 - y1, primary, stroke, SHAPES.RECTANGLE, secondary, transparent));
-            //graphics2D.draw(new Rectangle2D.Double(x2, y1, x1 - x2, y2 - y1));
-        } else if (x1 < x2 && y2 < y1) {
-            canvasPanel.pushStackForPreview(new models.Shape(x1, y2, x2 - x1, y1 - y2, primary, stroke, SHAPES.RECTANGLE, secondary, transparent));
-            //graphics2D.draw(new Rectangle2D.Double(x1, y2, x2 - x1, y1 - y2));
-        } else if (x2 < x1 && y2 < y1) {
-            canvasPanel.pushStackForPreview(new Shape(x2, y2, x1 - x2, y1 - y2, primary, stroke, SHAPES.RECTANGLE, secondary, transparent));
-            //graphics2D.draw(new Rectangle2D.Double(x2, y2, x1 - x2, y1 - y2));
-        }
+        canvasPanel.mouseDraggedX = (int) (e.getX() / canvasPanel.widthScale);
+        canvasPanel.mouseDraggedY = (int) (e.getY() / canvasPanel.widthScale);
+        canvasPanel.mouseDragged = true;
         canvasPanel.repaint();
-
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
-
+      //  canvasPanel.notifyMousePositionListener(e.getX(), e.getY());
     }
 }

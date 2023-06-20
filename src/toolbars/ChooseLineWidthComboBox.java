@@ -30,7 +30,8 @@ public class ChooseLineWidthComboBox extends JComboBox implements ActionListener
         try {
             String current = (String) this.getSelectedItem();
             assert current != null;
-            frame.getCanvasPanel().setThickness(Float.parseFloat(current));
+
+            frame.getCanvasPanel().shapeThickness = Integer.parseInt(current);
         }
         catch (NumberFormatException exception) {
 

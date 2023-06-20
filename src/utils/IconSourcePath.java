@@ -16,4 +16,8 @@ public class IconSourcePath {
     public static final String UNDO = "/icons/Undo-24.png";
     public static final String REDO = "/icons/Redo-24.png";
     public static final String CLEAR = "/icons/Trash-24.png";
+
+    public static final String COORDINATES = "/icons/coordinates.png";
+    public static final String SIZE_PIC = "/icons/size.png";
+
 }

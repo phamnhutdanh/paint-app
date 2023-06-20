@@ -1,7 +1,7 @@
 package coordinatebars;
 
-import panels.CanvasPanel;
 import ui.PaintGui;
+import utils.IconSourcePath;
 
 import java.awt.Color;
 import java.awt.event.MouseEvent;
@@ -16,8 +16,10 @@ import javax.swing.JToolBar;
 public class CoordinateBar extends JToolBar implements MouseListener, MouseMotionListener {
     private JLabel coordinates;
     private JLabel frameSize;
-    private Separator separator;
     private PaintGui frame;
+    private ImageIcon ICON_COORDINATES = new ImageIcon(getClass().getResource(IconSourcePath.COORDINATES));
+    private ImageIcon ICON_SIZE_PIC = new ImageIcon(getClass().getResource(IconSourcePath.SIZE_PIC));
+
 
     public CoordinateBar(PaintGui frame) {
         this.frame = frame;
@@ -27,16 +29,16 @@ public class CoordinateBar extends JToolBar implements MouseListener, MouseMotio
     }
 
     private void initUI() {
-        JLabel coordinatePic = new JLabel(new ImageIcon(getClass().getResource("/icons/coordinates.png")));
+        JLabel coordinatePic = new JLabel(ICON_COORDINATES);
         this.add(coordinatePic);
         coordinates = new JLabel();
         coordinates.setText("  0 x 0  ");
         this.add(coordinates);
 
-        separator = new Separator();
+        Separator separator = new Separator();
         this.add(separator);
 
-        JLabel sizePic = new JLabel(new ImageIcon(getClass().getResource("/icons/size.png")));
+        JLabel sizePic = new JLabel(ICON_SIZE_PIC);
         this.add(sizePic);
         frameSize = new JLabel();
         frameSize.setText("  0 x 0  ");
@@ -67,7 +69,6 @@ public class CoordinateBar extends JToolBar implements MouseListener, MouseMotio
         String posY = String.valueOf((int) e.getPoint().getY());
         coordinates.setText(posX + ",  " + posY + " px");
     }
-    // print drawer panel size at status tool bar
     public void printPaintPanelSize(int width, int height) {
         frameSize.setText(width + ",  " + height + " px");
     }

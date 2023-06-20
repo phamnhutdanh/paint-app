@@ -9,8 +9,8 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class ColorChooser extends JToolBar {
-    private final ArrayList<ColorButton> colorButtons = new ArrayList<ColorButton>();
-    private final ArrayList<Color> colors = new ArrayList<Color>() {
+    private final ArrayList<ColorButton> colorButtons = new ArrayList<>();
+    private final ArrayList<Color> colors = new ArrayList<>() {
         {
             add(new Color(235, 51, 36));
             add(new Color(240, 135, 132));
@@ -36,6 +36,7 @@ public class ColorChooser extends JToolBar {
     };
     private Color currentColor;
     private JPanel resultPanel;
+    private JPanel tempPanel;
     private PaintGui frame;
 
     public ColorChooser(PaintGui frame) {
@@ -60,14 +61,12 @@ public class ColorChooser extends JToolBar {
         JPanel buttonGroup = new JPanel();
         buttonGroup.setLayout(new GridLayout(3, 0, 8, 8));
 
-         resultPanel = new JPanel();
-        ChooseColorButton chooseColorButton = new ChooseColorButton(new ImageIcon(
-                this.getClass().getResource(IconSourcePath.CHOOSE_COLOR)
-        ), this);
-        JButton button3 = new JButton("Eye dropper");
+        resultPanel = new JPanel();
+        ChooseColorButton chooseColorButton = new ChooseColorButton(this);
+        ColorPickerButton colorPickerButton = new ColorPickerButton(this);
 
         buttonGroup.add(chooseColorButton);
-        buttonGroup.add(button3);
+        buttonGroup.add(colorPickerButton);
         buttonGroup.add(resultPanel);
 
         // Grid color

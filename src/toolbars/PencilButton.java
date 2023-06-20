@@ -12,22 +12,50 @@ import java.awt.event.*;
 
 public class PencilButton extends JButton implements ActionListener, MouseListener, MouseMotionListener {
     private PaintGui frame;
+    private CanvasPanel canvasPanel;
     private ImageIcon ICON = new ImageIcon(this.getClass().getResource(IconSourcePath.PENCIL));
 
     public PencilButton(PaintGui frame) {
         super("Pencil");
         this.setIcon(ICON);
         this.frame = frame;
+        canvasPanel = frame.getCanvasPanel();
         this.addActionListener(this);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        frame.getCanvasPanel().setTool(SHAPES.PENCIL);
+        frame.getCanvasPanel().shapeType = Shape.BRUSH;
 
         frame.getCanvasPanel().replaceMouseListener(this);
         frame.getCanvasPanel().replaceMouseMotionListener(this);
+    }
 
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+      //  canvasPanel.notifyMousePositionListener(e.getX(), e.getY());
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        if ((canvasPanel.mouseDraggedX != (int) (e.getX() / canvasPanel.widthScale) ||
+                canvasPanel.mouseDraggedY != (int) (e.getY() / canvasPanel.widthScale))) {
+            canvasPanel.shapes.add(new Shape((int) (e.getX() / canvasPanel.widthScale),
+                    (int) (e.getY() / canvasPanel.widthScale),
+                    canvasPanel.shapeColor,
+                    canvasPanel.shapeThickness,
+                    canvasPanel.shapeType));
+
+        }
+        canvasPanel.mouseDraggedX = (int) (e.getX() / canvasPanel.widthScale);
+        canvasPanel.mouseDraggedY = (int) (e.getY() / canvasPanel.widthScale);
+        canvasPanel.mouseDragged = true;
+        canvasPanel.repaint();
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
     }
 
     @Override
@@ -37,74 +65,40 @@ public class PencilButton extends JButton implements ActionListener, MouseListen
 
     @Override
     public void mousePressed(MouseEvent e) {
-        frame.getCanvasPanel().setX1(e.getX());
-        frame.getCanvasPanel().setY1(e.getY());
+        //We have to clear redo if shapetype not equal color picker
+        canvasPanel.shapesRedo.clear();
+        canvasPanel.filledTempsRedo.clear();
+        canvasPanel.filledTempDelayRedo.clear();
+
+        canvasPanel.mousePressedX = (int) (e.getX() / canvasPanel.widthScale);
+        canvasPanel.mousePressedY = (int) (e.getY() / canvasPanel.widthScale);
+
+        canvasPanel.shapes.add(new Shape(canvasPanel.mousePressedX,
+                canvasPanel.mousePressedY,
+                canvasPanel.shapeColor,
+                canvasPanel.shapeThickness,
+                canvasPanel.shapeType));
+        canvasPanel.filledTempDelay.add(true);
+        canvasPanel.shapes.get(canvasPanel.shapes.size() - 1).pressed = true;
+        repaint();
+
+        canvasPanel.mousePressed = true;
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        CanvasPanel canvasPanel = frame.getCanvasPanel();
-        Color currentColor = canvasPanel.getCurrentColor();
-        Color fillColor = canvasPanel.getFillColor();
-
-        canvasPanel.addGroup(1);
-
-        Color primary = currentColor;
-        Color secondary = fillColor;
-        if (SwingUtilities.isRightMouseButton(e)) {
-            primary = secondary;
-            secondary = currentColor;
+        canvasPanel.mousePressed = false;
+        if (!canvasPanel.shapes.isEmpty()) {
+            canvasPanel.shapes.get(canvasPanel.shapes.size() - 1).setEndOfShape();
+            canvasPanel.filledTempDelay.add(true);
         }
-
-        canvasPanel.setDragged(false);
-        canvasPanel.removedALl();
-        canvasPanel.repaint();
+        if (canvasPanel.mouseDragged) {
+            canvasPanel.mouseDragged = false;
+        }
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseDragged(MouseEvent e) {
-        CanvasPanel canvasPanel = frame.getCanvasPanel();
-        Color currentColor = canvasPanel.getCurrentColor();
-        Color fillColor = canvasPanel.getFillColor();
-
-        Color primary = currentColor;
-        Color secondary = fillColor;
-        if (SwingUtilities.isRightMouseButton(e)) {
-            primary = secondary;
-            secondary = currentColor;
-        }
-        // printCoordinates(e);
-
-        canvasPanel.setX2(e.getX());
-        canvasPanel.setY2(e.getY());
-        canvasPanel.setDragged(true);
-
-        canvasPanel.pushStackForShapes(new Shape(
-                canvasPanel.getX1(),
-                canvasPanel.getY1(),
-                canvasPanel.getX2(),
-                canvasPanel.getY2(),
-                primary,
-                canvasPanel.getStroke(),
-                SHAPES.LINE,
-                canvasPanel.getGrouped()));
-        canvasPanel.repaint();
-        canvasPanel.setX1(canvasPanel.getX2());
-        canvasPanel.setY1(canvasPanel.getY2());
-    }
-
-    @Override
-    public void mouseMoved(MouseEvent e) {
 
     }
 }

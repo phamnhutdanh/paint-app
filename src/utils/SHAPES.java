@@ -9,6 +9,7 @@ public enum SHAPES {
     TEXT,
     ERASER,
     FILL,
+    COLOR_PICKER,
 
 
 }

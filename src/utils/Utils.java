@@ -1,5 +1,7 @@
 package utils;
 
+import models.FilledTemp;
+import panels.CanvasPanel;
 import ui.PaintGui;
 
 import java.awt.*;

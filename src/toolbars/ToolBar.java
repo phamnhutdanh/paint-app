@@ -71,7 +71,5 @@ public class ToolBar extends JToolBar {
         add(redoButton);
         addSeparator();
         add(chooseLineWidthComboBox);
-
-        frame.getCanvasPanel().setTool(SHAPES.PENCIL);
     }
 }

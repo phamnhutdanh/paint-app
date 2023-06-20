@@ -31,14 +31,14 @@ public class SaveFileMenuItem extends JMenuItem implements ActionListener {
     }
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (fc.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION) {
+       /* if (fc.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION) {
             frame.getCanvasPanel().setFile(new File(fc.getSelectedFile() + ".png"));
             try {
                 saveFile(frame.getCanvasPanel().getFile());
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
-        }
+        }*/
     }
     private void saveFile(File f) throws IOException {
 

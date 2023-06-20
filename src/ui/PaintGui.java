@@ -1,10 +1,13 @@
 package ui;
 
+//import listeners.ColorPickerListener;
 import menubars.MenuBar;
+import models.Shape;
 import panels.CanvasPanel;
 import toolbars.ColorChooser;
 import coordinatebars.CoordinateBar;
 import toolbars.ToolBar;
+import models.FilledTemp;
 
 import javax.swing.*;
 import java.awt.*;
@@ -33,14 +36,13 @@ public class PaintGui extends JFrame {
         inkPanelWidth = dim.width - 200;
         inkPanelHeight = dim.height - 200;
 
+        canvas = new CanvasPanel();
         contentPane = new JPanel();
-        canvas = new CanvasPanel(0, this, inkPanelWidth, inkPanelHeight);
         toolBar = new ToolBar(this);
         coordinateBar = new CoordinateBar(this);
         colorChooser = new ColorChooser(this);
         menuBar = new MenuBar(this);
         init();
-
     }
 
     public void drawUI() {
