@@ -81,14 +81,14 @@ public class CanvasPanel extends JPanel {
         }
 
         Color shapeColor = canvasModel.getShapeColor();
-        int shapeThickness = canvasModel.getShapeThickness(), startX = canvasModel.getStartX(),
-                startY = canvasModel.getStartY(), width = canvasModel.getWidth(),
-                height = canvasModel.getHeight();
+        int shapeThickness = canvasModel.getShapeThickness();
         if (canvasModel.isMousePressed()) {
             g2d.setColor(shapeColor);
             g2d.setStroke(new BasicStroke(shapeThickness));
             calculateShapePoint();
-
+            int  startX = canvasModel.getStartX(),
+                    startY = canvasModel.getStartY(), width = canvasModel.getWidth(),
+                    height = canvasModel.getHeight();
             switch (canvasModel.getShapeType()) {
                 case RECTANGLE -> g2d.drawRect(startX, startY, width, height);
                 case CIRCLE -> g2d.drawOval(startX, startY, width, height);
