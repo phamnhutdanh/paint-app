@@ -2,7 +2,6 @@ package toolbars;
 
 import ui.PaintGui;
 import utils.IconSourcePath;
-import utils.SHAPES;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,9 +17,7 @@ public class ToolBar extends JToolBar {
     private EraserButton eraserButton;
     private ChooseLineWidthComboBox chooseLineWidthComboBox;
 
-
     private JButton text;
-    private JButton fill;
     private PaintGui frame;
 
     public ToolBar(PaintGui frame) {
@@ -33,14 +30,11 @@ public class ToolBar extends JToolBar {
         // ----------------
         // create buttons for the tool bar
         // ----------------
-        //toolBar = new JToolBar(JToolBar.HORIZONTAL);
         setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Color.BLACK));
         setFloatable(false);
         FlowLayout flowLayout = new FlowLayout();
         flowLayout.setAlignment(FlowLayout.LEFT);
         setLayout(flowLayout);
-
-        //toolBar.setBackground( new Color(0, 153, 204));
 
         pencilButton = new PencilButton(frame);
         lineButton = new LineButton(frame);

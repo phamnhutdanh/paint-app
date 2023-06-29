@@ -19,6 +19,7 @@ public class ChooseLineWidthComboBox extends JComboBox implements ActionListener
         addAllItems(items);
         this.setMaximumSize(new Dimension(100, 25));
     }
+    
     private void addAllItems(String[] items) {
         for (int i=0;i<items.length;i++) {
             this.addItem(items[i]);
@@ -31,7 +32,7 @@ public class ChooseLineWidthComboBox extends JComboBox implements ActionListener
             String current = (String) this.getSelectedItem();
             assert current != null;
 
-            frame.getCanvasPanel().shapeThickness = Integer.parseInt(current);
+            frame.getCanvasPanel().getCanvasModel().setShapeThickness(Integer.parseInt(current)); 
         }
         catch (NumberFormatException exception) {
 

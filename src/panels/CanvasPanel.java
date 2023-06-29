@@ -1,195 +1,158 @@
 package panels;
 
-import models.FilledTemp;
+import models.CanvasModel;
 import models.Shape;
+import utils.SHAPE_TYPE;
 
-import java.awt.AWTException;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 import java.util.List;
-import java.util.ArrayList;
 import javax.swing.JPanel;
 import java.awt.RenderingHints;
-import java.awt.Robot;
 
 public class CanvasPanel extends JPanel {
-    public int shapeType, shapeThickness = 4;
-    public int mousePressedX, mousePressedY, mouseReleasedX, mouseReleasedY, mouseDraggedX, mouseDraggedY;
-    public int width, height, startX, startY;
-    public Color shapeColor, canvasColor = new Color(238, 238, 238);
-    public Robot robot;
-    public List<Shape> shapes = new ArrayList<>();
-    public List<FilledTemp> filledTemps = new ArrayList<>();
-    public List<FilledTemp> filledTempsRedo = new ArrayList<>();
-    public List<Shape> shapesRedo = new ArrayList<>();
-    public boolean mousePressed = false;
-    public List<Boolean> filledTempDelay = new ArrayList<>();
-    public List<Boolean> filledTempDelayRedo = new ArrayList<>();
-    public Image imageTemp, imageDefault;
-    public boolean imageOpened = false;
-    public double widthScale = 1.0, heightScale = 1.0;
-    public boolean mouseDragged = false;
-    public int sizeWidth, sizeHeight;
+    private CanvasModel canvasModel;
     private MouseListener mouseListener;
     private MouseMotionListener mouseMotionListener;
 
-    public CanvasPanel() {
-        sizeWidth = 500;
-        sizeHeight = 500;
+    public CanvasPanel(int sizeWidth, int sizeHeight) {
+        super();
+        canvasModel = new CanvasModel();
+        canvasModel.setSizeWidth(sizeWidth);
+        canvasModel.setSizeHeight(sizeHeight);
         this.setPreferredSize(new Dimension(sizeWidth, sizeHeight));
-        setBackground(canvasColor);
-        shapeColor = Color.black;
-        shapeType = Shape.BRUSH;
-        try {
-            robot = new Robot();
-        } catch (AWTException ex) {
-            System.out.println("Robot creation failed!\n" + ex);
-        }
-    }
-
-    public void resetCanvas() {
-        shapes.clear();
-        filledTemps.clear();
-        filledTempsRedo.clear();
-        shapesRedo.clear();
-        filledTempDelay.clear();
-        filledTempDelayRedo.clear();
-        canvasColor = new Color(238, 238, 238);
-        if (this.imageOpened == true) {
-            imageOpened = false;
-            this.imageDefault.flush();
-            this.imageTemp.flush();
-        }
-        setBackground(canvasColor);
-        repaint();
+        setBackground(canvasModel.getCanvasColor());
+        canvasModel.setShapeColor(Color.black);
+        canvasModel.setShapeType(SHAPE_TYPE.BRUSH);
     }
 
     @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         super.paintComponent(g2d);
-        g2d.scale(widthScale, heightScale);
-        if (imageOpened) {
-            g2d.drawImage(imageTemp, 0, 0, null);
+        g2d.scale(canvasModel.getWidthScale(), canvasModel.getHeightScale());
+        if (canvasModel.isImageOpened()) {
+            g2d.drawImage(canvasModel.getImageTemp(), 0, 0, null);
         }
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         drawShapes(g2d);
     }
 
     public void drawShapes(Graphics2D g2d) {
+        List<Shape> shapes = canvasModel.getShapes();
         for (int i = 0; i < shapes.size(); i++) {
-            g2d.setColor(shapes.get(i).color);
-            switch (shapes.get(i).type) {
-                case Shape.CIRCLE:
-                    g2d.setStroke(new BasicStroke(shapes.get(i).thickness));
-                    g2d.drawOval(shapes.get(i).x, shapes.get(i).y, shapes.get(i).width, shapes.get(i).height);
+            g2d.setColor(shapes.get(i).getColor());
+            switch (shapes.get(i).getType()) {
+                case CIRCLE:
+                    g2d.setStroke(new BasicStroke(shapes.get(i).getThickness()));
+                    g2d.drawOval(shapes.get(i).getX(), shapes.get(i).getY(), shapes.get(i).getWidth(), shapes.get(i).getHeight());
                     break;
-                case Shape.BRUSH:
-                    g2d.setStroke(new BasicStroke(shapes.get(i).thickness, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-                    if (shapes.get(i).pressed) {
-                        g2d.drawLine(shapes.get(i).x, shapes.get(i).y, shapes.get(i).x, shapes.get(i).y);
-                    } else if (i != 0 && !shapes.get(i - 1).isEndOfShape() && shapes.get(i - 1).type == Shape.BRUSH) {
-                        g2d.drawLine(shapes.get(i - 1).x, shapes.get(i - 1).y, shapes.get(i).x, shapes.get(i).y);
+                case BRUSH:
+                    g2d.setStroke(new BasicStroke(shapes.get(i).getThickness(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+                    if (shapes.get(i).isPressed()) {
+                        g2d.drawLine(shapes.get(i).getX(), shapes.get(i).getY(), shapes.get(i).getX(), shapes.get(i).getY());
+                    } else if (i != 0 && !shapes.get(i - 1).isEndOfShape() && shapes.get(i - 1).getType() == SHAPE_TYPE.BRUSH) {
+                        g2d.drawLine(shapes.get(i - 1).getX(), shapes.get(i - 1).getY(), shapes.get(i).getX(), shapes.get(i).getY());
                     }
                     break;
-                case Shape.RECTANGLE:
-                    g2d.setStroke(new BasicStroke(shapes.get(i).thickness));
-                    g2d.drawRect(shapes.get(i).x, shapes.get(i).y, shapes.get(i).width, shapes.get(i).height);
+                case RECTANGLE:
+                    g2d.setStroke(new BasicStroke(shapes.get(i).getThickness()));
+                    g2d.drawRect(shapes.get(i).getX(), shapes.get(i).getY(), shapes.get(i).getWidth(), shapes.get(i).getHeight());
                     break;
-                case Shape.LINE:
-                    g2d.setStroke(new BasicStroke(shapes.get(i).thickness));
-                    g2d.drawLine(shapes.get(i).x, shapes.get(i).y, shapes.get(i).width, shapes.get(i).height);
+                case LINE:
+                    g2d.setStroke(new BasicStroke(shapes.get(i).getThickness()));
+                    g2d.drawLine(shapes.get(i).getX(), shapes.get(i).getY(), shapes.get(i).getWidth(), shapes.get(i).getHeight());
                     break;
-                case Shape.ERASER:
-                    g2d.setStroke(new BasicStroke(shapes.get(i).thickness, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-                    if (shapes.get(i).pressed) {
-                        g2d.drawLine(shapes.get(i).x, shapes.get(i).y, shapes.get(i).x, shapes.get(i).y);
-                    } else if (i != 0 && !shapes.get(i - 1).isEndOfShape() && shapes.get(i - 1).type == Shape.ERASER) {
-                        g2d.drawLine(shapes.get(i - 1).x, shapes.get(i - 1).y, shapes.get(i).x, shapes.get(i).y);
+                case ERASER:
+                    g2d.setStroke(new BasicStroke(shapes.get(i).getThickness(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+                    if (shapes.get(i).isPressed()) {
+                        g2d.drawLine(shapes.get(i).getX(), shapes.get(i).getY(), shapes.get(i).getX(), shapes.get(i).getY());
+                    } else if (i != 0 && !shapes.get(i - 1).isEndOfShape() && shapes.get(i - 1).getType() == SHAPE_TYPE.ERASER) {
+                        g2d.drawLine(shapes.get(i - 1).getX(), shapes.get(i - 1).getY(), shapes.get(i).getX(), shapes.get(i).getY());
                     }
                 default:
                     break;
             }
         }
-        //For shapes not added to list yet
-        if (mousePressed) {
-            switch (shapeType) {
-                case Shape.RECTANGLE:
-                    g2d.setColor(shapeColor);
-                    g2d.setStroke(new BasicStroke(shapeThickness));
-                    calculateShapePoint();
-                    g2d.drawRect(startX, startY, width, height);
-                    break;
-                case Shape.CIRCLE:
-                    g2d.setStroke(new BasicStroke(shapeThickness));
-                    g2d.setColor(shapeColor);
-                    calculateShapePoint();
-                    g2d.drawOval(startX, startY, width, height);
-                    break;
-                case Shape.LINE:
-                    g2d.setStroke(new BasicStroke(shapeThickness));
-                    g2d.setColor(shapeColor);
-                    calculateShapePoint();
-                    g2d.drawLine(startX, startY, width, height);
-                    break;
-                default:
-                    break;
+
+        Color shapeColor = canvasModel.getShapeColor();
+        int shapeThickness = canvasModel.getShapeThickness(), startX = canvasModel.getStartX(),
+                startY = canvasModel.getStartY(), width = canvasModel.getWidth(),
+                height = canvasModel.getHeight();
+        if (canvasModel.isMousePressed()) {
+            g2d.setColor(shapeColor);
+            g2d.setStroke(new BasicStroke(shapeThickness));
+            calculateShapePoint();
+
+            switch (canvasModel.getShapeType()) {
+                case RECTANGLE -> g2d.drawRect(startX, startY, width, height);
+                case CIRCLE -> g2d.drawOval(startX, startY, width, height);
+                case LINE -> g2d.drawLine(startX, startY, width, height);
+                default -> {
+                }
             }
         }
     }
 
-    public void zoom(float val) {
-        widthScale = val / 20;
-        heightScale = val / 20;
-        if (widthScale == 0) {
-            widthScale = 0.05;
-        }
-        if (heightScale == 0) {
-            heightScale = 0.05;
-        }
-        scaleCanvas();
+    public void resetCanvas() {
+        canvasModel.clearCanvas();
+        setBackground(canvasModel.getCanvasColor());
+        repaint();
     }
 
     public void scaleCanvas() {
-        this.setPreferredSize(new Dimension((int) (sizeWidth * widthScale), (int) (sizeHeight * heightScale)));
+        this.setPreferredSize(new Dimension((int) (canvasModel.getSizeWidth() * canvasModel.getWidthScale()),
+                (int) (canvasModel.getSizeHeight() * canvasModel.getHeightScale())));
         revalidate();
         repaint();
     }
 
-    public void calculateShapePoint() {
-        if (shapeType == Shape.LINE) {
-            startX = mousePressedX;
-            startY = mousePressedY;
-            width = mouseDraggedX;
-            height = mouseDraggedY;
+    public void setPanelSize(int width, int height) {
+        BufferedImage canvas = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D graphics2D = canvas.createGraphics();
+        graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        this.setSize(width - 3, height - 3);
+        this.setPreferredSize(new Dimension(width - 3, height - 3));
+        resetCanvas();
+    }
+
+    private void calculateShapePoint() {
+        int mousePressedX = canvasModel.getMousePressedX(), mouseDraggedX = canvasModel.getMouseDraggedX(),
+                mousePressedY = canvasModel.getMousePressedY(), mouseDraggedY = canvasModel.getMouseDraggedY();
+        if (canvasModel.getShapeType() == SHAPE_TYPE.LINE) {
+            canvasModel.setStartX(mousePressedX);
+            canvasModel.setStartY(mousePressedY);
+            canvasModel.setWidth(mouseDraggedX);
+            canvasModel.setHeight(mouseDraggedY);
             return;
         }
         if (mouseDraggedX < mousePressedX) {
             if (mouseDraggedY < mousePressedY) {
-                startY = mouseDraggedY;
-                height = mousePressedY - mouseDraggedY;
+                canvasModel.setStartY(mouseDraggedY);
+                canvasModel.setHeight(mousePressedY - mouseDraggedY);
             } else {
-                startY = mousePressedY;
-                height = mouseDraggedY - mousePressedY;
+                canvasModel.setStartY(mousePressedY);
+                canvasModel.setHeight(mouseDraggedY - mousePressedY);
             }
-            startX = mouseDraggedX;
-            width = mousePressedX - mouseDraggedX;
+
+            canvasModel.setStartX(mouseDraggedX);
+            canvasModel.setWidth(mousePressedX - mouseDraggedX);
 
         } else if (mouseDraggedY < mousePressedY) {
-            startX = mousePressedX;
-            startY = mouseDraggedY;
-            width = mouseDraggedX - mousePressedX;
-            height = mousePressedY - mouseDraggedY;
+            canvasModel.setStartX(mousePressedX);
+            canvasModel.setStartY(mouseDraggedY);
+            canvasModel.setWidth(mouseDraggedX - mousePressedX);
+            canvasModel.setHeight(mousePressedY - mouseDraggedY);
         } else {
-            startX = mousePressedX;
-            startY = mousePressedY;
-            width = mouseDraggedX - mousePressedX;
-            height = mouseDraggedY - mousePressedY;
+            canvasModel.setStartX(mousePressedX);
+            canvasModel.setStartY(mousePressedY);
+            canvasModel.setWidth(mouseDraggedX - mousePressedX);
+            canvasModel.setHeight(mouseDraggedY - mousePressedY);
         }
     }
 
@@ -203,5 +166,9 @@ public class CanvasPanel extends JPanel {
         removeMouseMotionListener(this.mouseMotionListener);
         this.mouseMotionListener = mouseMotionListener;
         addMouseMotionListener(this.mouseMotionListener);
+    }
+
+    public CanvasModel getCanvasModel() {
+        return canvasModel;
     }
 }

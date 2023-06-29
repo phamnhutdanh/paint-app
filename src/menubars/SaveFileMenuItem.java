@@ -1,12 +1,15 @@
 package menubars;
 
+import panels.CanvasPanel;
 import ui.PaintGui;
 import utils.IconSourcePath;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.awt.*;
+
+import models.CanvasModel;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -31,31 +34,35 @@ public class SaveFileMenuItem extends JMenuItem implements ActionListener {
     }
     @Override
     public void actionPerformed(ActionEvent e) {
-       /* if (fc.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION) {
-            frame.getCanvasPanel().setFile(new File(fc.getSelectedFile() + ".png"));
-            try {
-                saveFile(frame.getCanvasPanel().getFile());
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-        }*/
+       saveFile();
     }
-    private void saveFile(File f) throws IOException {
 
-        // ----------------
-        // Take all the contents of the jpanel and save them to a png
-        // 		destination is the file they selected via the filechooser
-        // ----------------
-        BufferedImage im = makePanel(frame.getCanvasPanel());
-        ImageIO.write(im, "png", f);
+    public void saveFile() {
+        CanvasPanel canvasPanel = frame.getCanvasPanel();
+        CanvasModel canvas = canvasPanel.getCanvasModel();
+        double oldWidthScale = canvas.getWidthScale();
+        double oldHeightScale = canvas.getHeightScale();
+        canvas.setWidthScale(1); 
+        canvas.setHeightScale(1); 
+        canvasPanel.scaleCanvas();
+        JFileChooser fileChooser = new JFileChooser();
+        int val = fileChooser.showSaveDialog(this);
+        String filePath;
+        if (val == JFileChooser.APPROVE_OPTION) {
+            filePath = fileChooser.getSelectedFile().getAbsolutePath();
+        } else {
+            return;
+        }
+        BufferedImage image = new BufferedImage(canvas.getSizeWidth(), canvas.getSizeHeight(), BufferedImage.TYPE_INT_RGB);
+        canvasPanel.printAll(image.getGraphics());
+        canvas.setWidthScale(oldWidthScale); 
+        canvas.setHeightScale(oldHeightScale); 
+        canvasPanel.scaleCanvas();
+        try {
+            ImageIO.write(image, "png", new File(filePath + ".png"));
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
-    private BufferedImage makePanel(JPanel panel)
-    {
-        int w = panel.getWidth();
-        int h = panel.getHeight();
-        BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
-        Graphics2D g = bi.createGraphics();
-        panel.print(g);
-        return bi;
-    }
+
 }

@@ -1,13 +1,10 @@
 package ui;
 
-//import listeners.ColorPickerListener;
 import menubars.MenuBar;
-import models.Shape;
 import panels.CanvasPanel;
-import toolbars.ColorChooser;
+import colorbars.ColorChooser;
 import coordinatebars.CoordinateBar;
 import toolbars.ToolBar;
-import models.FilledTemp;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,26 +19,30 @@ public class PaintGui extends JFrame {
 
     private JPanel contentPane;
     private JScrollPane scrollPane;
-    private CanvasPanel canvas;
+    private CanvasPanel canvasPanel;
 
     private final int CONTENT_PANE_WIDTH = 900;
     private final int CONTENT_PANE_HEIGHT = 600;
 
-    private int inkPanelWidth;
+    private int canvasPanelWidth;
     private int inkPanelHeight;
     private final Color background = Color.GRAY;
 
     public PaintGui() {
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        inkPanelWidth = dim.width - 200;
+        canvasPanelWidth = dim.width - 200;
         inkPanelHeight = dim.height - 200;
+        canvasPanel = new CanvasPanel(canvasPanelWidth,inkPanelHeight);
 
-        canvas = new CanvasPanel();
+        canvasPanelWidth = canvasPanel.getCanvasModel().getSizeWidth();
+        inkPanelHeight = canvasPanel.getCanvasModel().getSizeHeight();
+
         contentPane = new JPanel();
         toolBar = new ToolBar(this);
         coordinateBar = new CoordinateBar(this);
         colorChooser = new ColorChooser(this);
         menuBar = new MenuBar(this);
+
         init();
     }
 
@@ -75,10 +76,10 @@ public class PaintGui extends JFrame {
     private void initCanvas() {
         scrollPane = new JScrollPane();
         scrollPane.setLocation(10, 10);
-        scrollPane.setSize(inkPanelWidth, inkPanelHeight);
+        scrollPane.setSize(canvasPanelWidth, inkPanelHeight);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setViewportView(canvas);
+        scrollPane.setViewportView(canvasPanel);
 
         contentPane.add(scrollPane);
         contentPane.setBackground(background);
@@ -110,16 +111,13 @@ public class PaintGui extends JFrame {
     public ToolBar getToolBar() {
         return toolBar;
     }
-
     public JScrollPane getScrollPane() {
         return scrollPane;
     }
-
     public CoordinateBar getCoordinateBar() {
         return coordinateBar;
     }
-
     public CanvasPanel getCanvasPanel() {
-        return canvas;
+        return canvasPanel;
     }
 }

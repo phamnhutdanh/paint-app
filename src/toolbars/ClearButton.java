@@ -20,7 +20,6 @@ public class ClearButton extends JButton implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        //TODO: fix here
         frame.getCanvasPanel().resetCanvas();
     }
 }

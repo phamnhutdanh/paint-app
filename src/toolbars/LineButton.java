@@ -1,35 +1,33 @@
 package toolbars;
 
-//import listeners.ColorPickerListener;
+import models.CanvasModel;
 import models.Shape;
 import panels.CanvasPanel;
 import ui.PaintGui;
 import utils.IconSourcePath;
-import utils.SHAPES;
+import utils.SHAPE_TYPE;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.*;
 
 public class LineButton extends JButton implements ActionListener, MouseListener, MouseMotionListener {
-    private PaintGui frame;
     private CanvasPanel canvasPanel;
+    private CanvasModel canvasModel;
     private ImageIcon ICON = new ImageIcon(this.getClass().getResource(IconSourcePath.LINE));
 
     public LineButton(PaintGui frame) {
         super("Line");
         this.setIcon(ICON);
-        this.frame = frame;
         canvasPanel = frame.getCanvasPanel();
+        canvasModel = frame.getCanvasPanel().getCanvasModel();
         this.addActionListener(this);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        frame.getCanvasPanel().shapeType = Shape.LINE;
-
-        frame.getCanvasPanel().replaceMouseListener(this);
-        frame.getCanvasPanel().replaceMouseMotionListener(this);
+        canvasModel.setShapeType(SHAPE_TYPE.LINE);
+        canvasPanel.replaceMouseListener(this);
+        canvasPanel.replaceMouseMotionListener(this);
     }
 
     @Override
@@ -39,35 +37,35 @@ public class LineButton extends JButton implements ActionListener, MouseListener
 
     @Override
     public void mousePressed(MouseEvent e) {
-        //We have to clear redo if shapetype not equal color picker
-        canvasPanel.shapesRedo.clear();
-        canvasPanel.filledTempsRedo.clear();
-        canvasPanel.filledTempDelayRedo.clear();
+        canvasModel.clearShapeRedo();
+        canvasModel.clearFilledTempsRedo();
+        canvasModel.clearFilledTempDelayRedo();
 
-        canvasPanel.mousePressedX = (int) (e.getX() /  canvasPanel.widthScale);
-        canvasPanel.mousePressedY = (int) (e.getY() /  canvasPanel.widthScale);
-
-        canvasPanel.mousePressed = true;
+        canvasModel.setMousePressedX((int) (e.getX() / canvasModel.getWidthScale()));
+        canvasModel.setMousePressedY((int) (e.getY() / canvasModel.getWidthScale()));
+        canvasModel.setMousePressed(true);
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        canvasPanel.mousePressed = false;
-        canvasPanel.shapes.add(new Shape(canvasPanel.startX,
-                canvasPanel.startY,
-                canvasPanel.width,
-                canvasPanel.height,
-                canvasPanel.shapeColor,
-                canvasPanel.shapeThickness,
-                canvasPanel.shapeType));
+        canvasModel.setMousePressed(false);
 
-        if (!canvasPanel.shapes.isEmpty()) {
-            canvasPanel.shapes.get(canvasPanel.shapes.size() - 1).setEndOfShape();
-            canvasPanel.filledTempDelay.add(true);
+        Shape shape = new Shape(canvasModel.getStartX(),
+                canvasModel.getStartY(),
+                canvasModel.getWidth(),
+                canvasModel.getHeight(),
+                canvasModel.getShapeColor(),
+                canvasModel.getShapeThickness(),
+                canvasModel.getShapeType());
+        canvasModel.addShape(shape);
+
+        if (!canvasModel.getShapes().isEmpty()) {
+            canvasModel.setListShapesEndOfShapeAtPosition(canvasModel.getShapes().size() - 1);
+            canvasModel.addFilledTempDelay(true);
         }
 
-        if (canvasPanel.mouseDragged) {
-            canvasPanel.mouseDragged = false;
+        if (canvasModel.isMouseDragged()) {
+            canvasModel.setMouseDragged(false);
         }
     }
 
@@ -82,9 +80,9 @@ public class LineButton extends JButton implements ActionListener, MouseListener
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        canvasPanel.mouseDraggedX = (int) (e.getX() / canvasPanel.widthScale);
-        canvasPanel.mouseDraggedY = (int) (e.getY() / canvasPanel.widthScale);
-        canvasPanel.mouseDragged = true;
+        canvasModel.setMouseDraggedX((int) (e.getX() / canvasModel.getWidthScale()));
+        canvasModel.setMouseDraggedY((int) (e.getY() / canvasModel.getWidthScale()));
+        canvasModel.setMouseDragged(true);
         canvasPanel.repaint();
     }
 

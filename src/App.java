@@ -1,6 +1,5 @@
 import ui.PaintGui;
 
-import java.awt.*;
 import javax.swing.*;
 
 public class App {
