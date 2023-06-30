@@ -43,8 +43,8 @@ public class ResizeCanvasMenuItem extends JMenuItem implements ActionListener {
         newFileFrame.setVisible(true);
 
         JTextField width = new JTextField();
-        width.setSize(100, 25);
         width.setLocation(100, 25);
+        width.setSize(200, 25);
 
         JLabel widthLabel = new JLabel("Width (px):");
         widthLabel.setSize(75, 25);
@@ -56,10 +56,10 @@ public class ResizeCanvasMenuItem extends JMenuItem implements ActionListener {
 
         JTextField height = new JTextField();
         height.setLocation(100, 75);
-        height.setSize(100, 25);
+        height.setSize(200, 25);
 
         JButton okay = new JButton("OK");
-        okay.setLocation(250, 25);
+        okay.setLocation(250, 125);
         okay.setSize(75, 25);
         okay.addActionListener(new ActionListener() {
                                    public void actionPerformed(ActionEvent e) {
@@ -83,7 +83,7 @@ public class ResizeCanvasMenuItem extends JMenuItem implements ActionListener {
 
         JButton cancel = new JButton("Cancel");
         cancel.setSize(75, 25);
-        cancel.setLocation(250, 75);
+        cancel.setLocation(150, 125);
         cancel.addActionListener(new ActionListener() {
                                      public void actionPerformed(ActionEvent e) {
                                          newFileFrame.dispose();

@@ -2,6 +2,7 @@ package utils;
 
 public class IconSourcePath {
     public static final String CHOOSE_COLOR = "/icons/choose-color.png";
+    public static final String COLOR_PICKER = "/icons/color-wheel.png";
     public static final String SAVE = "/icons/save.png";
     public static final String OPEN = "/icons/folder.png";
     public static final String NEW_FILE = "/icons/add-file.png";

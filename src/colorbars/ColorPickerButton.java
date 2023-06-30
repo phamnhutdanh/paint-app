@@ -1,6 +1,7 @@
 package colorbars;
 
 import panels.CanvasPanel;
+import utils.IconSourcePath;
 import utils.SHAPE_TYPE;
 
 import javax.swing.*;
@@ -14,9 +15,10 @@ public class ColorPickerButton extends JButton implements ActionListener, MouseL
     private ColorChooser colorChooser;
     private CanvasPanel canvasPanel;
     private CanvasModel canvasModel;
-
+    private ImageIcon ICON = new ImageIcon(this.getClass().getResource(IconSourcePath.COLOR_PICKER));
     public ColorPickerButton(ColorChooser colorChooser) {
         super("Color Picker");
+        setIcon(ICON);
         this.colorChooser = colorChooser;
         canvasPanel = colorChooser.getFrame().getCanvasPanel();
         canvasModel = colorChooser.getFrame().getCanvasPanel().getCanvasModel();

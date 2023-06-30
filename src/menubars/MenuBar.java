@@ -12,7 +12,7 @@ public class MenuBar extends JMenuBar {
         JMenuItem openFile = new OpenFileMenuItem(frame);
         JMenuItem saveFile = new SaveFileMenuItem(frame);
         JMenuItem resizeCanvas = new ResizeCanvasMenuItem(frame);
-        JMenuItem exit = new ExitMenuItem();
+        JMenuItem exit = new ExitMenuItem(frame);
 
         menuFile.add(newFile);
         menuFile.add(resizeCanvas);

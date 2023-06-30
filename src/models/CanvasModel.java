@@ -32,13 +32,13 @@ public class CanvasModel {
     private Image imageTemp, imageDefault;
     private boolean imageOpened;
     private double widthScale, heightScale;
-
+    private boolean isBlank;
     private int sizeWidth, sizeHeight;
 
     public CanvasModel() {
         shapeThickness = 4;
         canvasColor = new Color(238, 238, 238);
-
+        isBlank = true;
         shapes = new ArrayList<>();
         filledTemps = new ArrayList<>();
         filledTempsRedo = new ArrayList<>();
@@ -394,5 +394,13 @@ public class CanvasModel {
 
     public void removeShapeRedoAtPosition(int pos) {
         shapesRedo.remove(pos);
+    }
+
+    public boolean isBlank() {
+        return isBlank;
+    }
+
+    public void setBlank(boolean blank) {
+        isBlank = blank;
     }
 }

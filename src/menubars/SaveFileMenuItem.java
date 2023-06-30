@@ -10,6 +10,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import models.CanvasModel;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -17,13 +18,13 @@ import java.io.File;
 import java.io.IOException;
 
 public class SaveFileMenuItem extends JMenuItem implements ActionListener {
-    private PaintGui frame;
+    private CanvasPanel canvasPanel;
     private ImageIcon ICON = new ImageIcon(this.getClass().getResource(IconSourcePath.SAVE));
     private JFileChooser fc;
     public SaveFileMenuItem(PaintGui frame) {
         super("Save file");
+        canvasPanel =frame.getCanvasPanel();
         this.setIcon(ICON);
-        this.frame = frame;
         initFileChooser();
 
         this.addActionListener(this);
@@ -34,11 +35,10 @@ public class SaveFileMenuItem extends JMenuItem implements ActionListener {
     }
     @Override
     public void actionPerformed(ActionEvent e) {
-       saveFile();
+       saveFile(canvasPanel, this);
     }
 
-    public void saveFile() {
-        CanvasPanel canvasPanel = frame.getCanvasPanel();
+    public static void saveFile(CanvasPanel canvasPanel, Component parent) {
         CanvasModel canvas = canvasPanel.getCanvasModel();
         double oldWidthScale = canvas.getWidthScale();
         double oldHeightScale = canvas.getHeightScale();
@@ -46,7 +46,7 @@ public class SaveFileMenuItem extends JMenuItem implements ActionListener {
         canvas.setHeightScale(1); 
         canvasPanel.scaleCanvas();
         JFileChooser fileChooser = new JFileChooser();
-        int val = fileChooser.showSaveDialog(this);
+        int val = fileChooser.showSaveDialog(parent);
         String filePath;
         if (val == JFileChooser.APPROVE_OPTION) {
             filePath = fileChooser.getSelectedFile().getAbsolutePath();
@@ -60,8 +60,16 @@ public class SaveFileMenuItem extends JMenuItem implements ActionListener {
         canvasPanel.scaleCanvas();
         try {
             ImageIO.write(image, "png", new File(filePath + ".png"));
+            String[] options = new String[] {"Ok"};
+            JOptionPane.showOptionDialog(null, "Save file successful", "Success",
+                    JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
+                    null, options, options[0]);
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
+            String[] options = new String[] {"Ok"};
+            JOptionPane.showOptionDialog(null, ex.getMessage(), "Error",
+                    JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
+                    null, options, options[0]);
         }
     }
 

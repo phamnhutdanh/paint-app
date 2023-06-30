@@ -41,6 +41,9 @@ public class CanvasPanel extends JPanel {
         }
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         drawShapes(g2d);
+        if (canvasModel.isMouseDragged() || canvasModel.isMousePressed()) {
+            canvasModel.setBlank(false);
+        }
     }
 
     public void drawShapes(Graphics2D g2d) {

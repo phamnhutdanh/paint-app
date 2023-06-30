@@ -1,15 +1,21 @@
 package ui;
 
 import menubars.MenuBar;
+import menubars.SaveFileMenuItem;
+import models.CanvasModel;
 import panels.CanvasPanel;
 import colorbars.ColorChooser;
 import coordinatebars.CoordinateBar;
 import toolbars.ToolBar;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class PaintGui extends JFrame {
     private MenuBar menuBar;
@@ -104,10 +110,30 @@ public class PaintGui extends JFrame {
     private final WindowAdapter windowCloser = new WindowAdapter() {
         @Override
         public void windowClosing(WindowEvent event) {
-            System.exit(0);
+            CanvasModel canvasModel = canvasPanel.getCanvasModel();
+
+            if (canvasModel.isBlank()) {
+                System.exit(0);
+            }
+            else {
+                String[] options = new String[] {"Save", "Don't save", "Cancel"};
+                int response = JOptionPane.showOptionDialog(null,
+                        "Are you sure you want to close", "Warning!",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
+                        null, options, options[0]);
+                if (response == 1)
+                {
+                    System.exit(0);
+                }
+                else if (response == 0) {
+                    SaveFileMenuItem.saveFile(canvasPanel, getContentPane());
+                    System.exit(0);
+
+                }
+            }
+            setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         }
     };
-
     public ToolBar getToolBar() {
         return toolBar;
     }

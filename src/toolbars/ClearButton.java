@@ -20,6 +20,12 @@ public class ClearButton extends JButton implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        frame.getCanvasPanel().resetCanvas();
+        int reply = JOptionPane.showConfirmDialog(null,
+                "Are you sure you want to clear all canvas?", "Clear?",
+                JOptionPane.YES_NO_OPTION);
+        if (reply == JOptionPane.YES_OPTION)
+        {
+            frame.getCanvasPanel().resetCanvas();
+        }
     }
 }
