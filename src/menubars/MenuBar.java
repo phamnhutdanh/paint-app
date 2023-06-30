@@ -20,8 +20,13 @@ public class MenuBar extends JMenuBar {
         menuFile.add(saveFile);
         menuFile.add(exit);
 
-        add(menuFile);
+        JMenu menuView = new JMenu("View");
+        JMenuItem showHideBar = new ShowAndHideCoordinateBarMenuItem(frame);
 
+        menuView.add(showHideBar);
+
+        add(menuFile);
+        add(menuView);
         setSize(500, 500);
         setVisible(true);
     }

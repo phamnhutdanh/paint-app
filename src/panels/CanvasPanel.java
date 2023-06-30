@@ -19,7 +19,6 @@ public class CanvasPanel extends JPanel {
     private CanvasModel canvasModel;
     private MouseListener mouseListener;
     private MouseMotionListener mouseMotionListener;
-
     public CanvasPanel(int sizeWidth, int sizeHeight) {
         super();
         canvasModel = new CanvasModel();

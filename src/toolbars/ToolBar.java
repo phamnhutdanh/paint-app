@@ -17,7 +17,6 @@ public class ToolBar extends JToolBar {
     private EraserButton eraserButton;
     private ChooseLineWidthComboBox chooseLineWidthComboBox;
     private TextButton textButton;
-
     private PaintGui frame;
 
     public ToolBar(PaintGui frame) {
@@ -48,9 +47,7 @@ public class ToolBar extends JToolBar {
         clearButton = new ClearButton(frame);
 
         chooseLineWidthComboBox = new ChooseLineWidthComboBox(frame);
-        // ----------------
-        // add buttons to the tool bar
-        // ----------------
+
         addSeparator();
         add(pencilButton);
         add(lineButton);
