@@ -33,9 +33,8 @@ public class ColorChooser extends JToolBar {
             add(new Color(255, 255, 255));
         }
     };
-    private Color currentColor;
     private JPanel resultPanel;
-    private PaintGui frame;
+    private final PaintGui frame;
 
     public ColorChooser(PaintGui frame) {
         super(JToolBar.VERTICAL);
@@ -51,9 +50,7 @@ public class ColorChooser extends JToolBar {
 
     private void initializeColorChooser() {
         Dimension buttonSize = new Dimension(36, 8);
-        colors.forEach(color -> {
-            colorButtons.add(new ColorButton(color, buttonSize, this));
-        });
+        colors.forEach(color -> colorButtons.add(new ColorButton(color, buttonSize, this)));
 
         // Button choose color
         JPanel buttonGroup = new JPanel();
@@ -76,20 +73,11 @@ public class ColorChooser extends JToolBar {
         add(colorPanel, BorderLayout.CENTER);
     }
 
-    public Color getCurrentColor() {
-        return currentColor;
-    }
-    public void setCurrentColor(Color color){
-        currentColor = color;
-    }
-
     public PaintGui getFrame() {
         return frame;
     }
+
     public JPanel getResultPanel() {
-        return  resultPanel;
-    }
-    public JToolBar getToolBar() {
-        return this;
+        return resultPanel;
     }
 }

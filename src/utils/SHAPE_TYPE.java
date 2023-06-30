@@ -5,9 +5,7 @@ public enum SHAPE_TYPE {
     LINE,
     RECTANGLE,
     CIRCLE,
-    SELECT,
     TEXT,
     ERASER,
-    FILL,
     COLOR_PICKER,
 }

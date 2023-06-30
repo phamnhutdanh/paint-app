@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 import java.awt.RenderingHints;
 
 public class CanvasPanel extends JPanel {
-    private CanvasModel canvasModel;
+    private final CanvasModel canvasModel;
     private MouseListener mouseListener;
     private MouseMotionListener mouseMotionListener;
     public CanvasPanel(int sizeWidth, int sizeHeight) {

@@ -6,13 +6,16 @@ import java.awt.*;
 
 public class Shape {
     private Color color;
-    private int thickness;
-    private int x, y, width, height;
-    private SHAPE_TYPE type;
+    private final int thickness;
+    private final int x;
+    private final int y;
+    private int width;
+    private int height;
+    private final SHAPE_TYPE type;
     private boolean endOfShape = false;
     private boolean pressed;
 
-    private String message;
+    private String message = "";
     private Font font;
 
     public Shape(int x, int y, Color color, int thickness, SHAPE_TYPE type) {
@@ -63,48 +66,24 @@ public class Shape {
         return thickness;
     }
 
-    public void setThickness(int thickness) {
-        this.thickness = thickness;
-    }
-
     public SHAPE_TYPE getType() {
         return type;
-    }
-
-    public void setType(SHAPE_TYPE type) {
-        this.type = type;
     }
 
     public int getX() {
         return x;
     }
 
-    public void setX(int x) {
-        this.x = x;
-    }
-
     public int getY() {
         return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
     }
 
     public int getWidth() {
         return width;
     }
 
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
     public int getHeight() {
         return height;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
     }
 
     public boolean isPressed() {
@@ -119,15 +98,7 @@ public class Shape {
         return message;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
     public Font getFont() {
         return font;
-    }
-
-    public void setFont(Font font) {
-        this.font = font;
     }
 }

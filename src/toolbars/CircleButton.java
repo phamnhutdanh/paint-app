@@ -9,14 +9,15 @@ import utils.SHAPE_TYPE;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.Objects;
 
 public class CircleButton extends JButton implements ActionListener, MouseListener, MouseMotionListener {
-    private CanvasPanel canvasPanel;
-    private CanvasModel canvasModel;
-    private ImageIcon ICON = new ImageIcon(this.getClass().getResource(IconSourcePath.CIRCLE));
+    private final CanvasPanel canvasPanel;
+    private final CanvasModel canvasModel;
 
     public CircleButton(PaintGui frame) {
         super("Circle");
+        ImageIcon ICON = new ImageIcon(Objects.requireNonNull(this.getClass().getResource(IconSourcePath.CIRCLE)));
         this.setIcon(ICON);
         canvasPanel = frame.getCanvasPanel();
         canvasModel = frame.getCanvasPanel().getCanvasModel();

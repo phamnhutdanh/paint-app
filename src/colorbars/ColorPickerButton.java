@@ -10,14 +10,16 @@ import models.CanvasModel;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 
 public class ColorPickerButton extends JButton implements ActionListener, MouseListener, MouseMotionListener {
-    private ColorChooser colorChooser;
-    private CanvasPanel canvasPanel;
-    private CanvasModel canvasModel;
-    private ImageIcon ICON = new ImageIcon(this.getClass().getResource(IconSourcePath.COLOR_PICKER));
+    private final ColorChooser colorChooser;
+    private final CanvasPanel canvasPanel;
+    private final CanvasModel canvasModel;
+
     public ColorPickerButton(ColorChooser colorChooser) {
         super("Color Picker");
+        ImageIcon ICON = new ImageIcon(Objects.requireNonNull(this.getClass().getResource(IconSourcePath.COLOR_PICKER)));
         setIcon(ICON);
         this.colorChooser = colorChooser;
         canvasPanel = colorChooser.getFrame().getCanvasPanel();
@@ -27,7 +29,7 @@ public class ColorPickerButton extends JButton implements ActionListener, MouseL
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        canvasModel.setShapeType(SHAPE_TYPE.COLOR_PICKER); 
+        canvasModel.setShapeType(SHAPE_TYPE.COLOR_PICKER);
         canvasPanel.replaceMouseListener(this);
         canvasPanel.replaceMouseMotionListener(this);
     }
@@ -62,15 +64,15 @@ public class ColorPickerButton extends JButton implements ActionListener, MouseL
 
         Color color = canvasModel.getRobot().getPixelColor(MouseInfo.getPointerInfo().getLocation().x,
                 MouseInfo.getPointerInfo().getLocation().y);
-        canvasModel.setShapeColor(color); 
+        canvasModel.setShapeColor(color);
         colorChooser.getResultPanel().setBackground(canvasModel.getShapeColor());
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        canvasModel.setMousePressed(false); 
+        canvasModel.setMousePressed(false);
         if (canvasModel.isMouseDragged()) {
-               canvasModel.setMouseDragged(false);
+            canvasModel.setMouseDragged(false);
         }
     }
 

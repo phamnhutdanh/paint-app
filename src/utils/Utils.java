@@ -11,10 +11,6 @@ public class Utils {
             frame.getScrollPane().setSize(dim.width - 200, dim.height - 200);
         } else if (width > dim.width - 200) {
             frame.getScrollPane().setSize(dim.width - 200, height);
-        } else if (height > dim.height - 200) {
-            frame.getScrollPane().setSize(width, dim.height - 200);
-        } else {
-            frame.getScrollPane().setSize(width, height);
-        }
+        } else frame.getScrollPane().setSize(width, Math.min(height, dim.height - 200));
     }
 }

@@ -11,24 +11,25 @@ import java.awt.Robot;
 
 public class CanvasModel {
     private int shapeThickness;
-    private int mousePressedX, mousePressedY,
-            mouseReleasedX, mouseReleasedY,
-            mouseDraggedX, mouseDraggedY;
+    private int mousePressedX;
+    private int mousePressedY;
+    private int mouseDraggedX;
+    private int mouseDraggedY;
     private int width, height,
             startX, startY;
     private Color shapeColor, canvasColor;
     private SHAPE_TYPE shapeType;
 
-    private List<Shape> shapes;
-    private List<FilledTemp> filledTemps;
-    private List<FilledTemp> filledTempsRedo;
-    private List<Shape> shapesRedo;
+    private final List<Shape> shapes;
+    private final List<FilledTemp> filledTemps;
+    private final List<FilledTemp> filledTempsRedo;
+    private final List<Shape> shapesRedo;
 
     private Robot robot;
     private boolean mousePressed, mouseDragged;
 
-    private List<Boolean> filledTempDelay;
-    private List<Boolean> filledTempDelayRedo;
+    private final List<Boolean> filledTempDelay;
+    private final List<Boolean> filledTempDelayRedo;
     private Image imageTemp, imageDefault;
     private boolean imageOpened;
     private double widthScale, heightScale;
@@ -68,7 +69,7 @@ public class CanvasModel {
         filledTempDelay.clear();
         filledTempDelayRedo.clear();
         canvasColor = new Color(238, 238, 238);
-        if (this.imageOpened == true) {
+        if (this.imageOpened) {
             imageOpened = false;
             this.imageDefault.flush();
             this.imageTemp.flush();
@@ -78,9 +79,11 @@ public class CanvasModel {
     public int getShapeThickness() {
         return shapeThickness;
     }
+
     public void setListShapesEndOfShapeAtPosition(int pos) {
         shapes.get(pos).setEndOfShape();
     }
+
     public void setShapeThickness(int shapeThickness) {
         this.shapeThickness = shapeThickness;
     }
@@ -99,22 +102,6 @@ public class CanvasModel {
 
     public void setMousePressedY(int mousePressedY) {
         this.mousePressedY = mousePressedY;
-    }
-
-    public int getMouseReleasedX() {
-        return mouseReleasedX;
-    }
-
-    public void setMouseReleasedX(int mouseReleasedX) {
-        this.mouseReleasedX = mouseReleasedX;
-    }
-
-    public int getMouseReleasedY() {
-        return mouseReleasedY;
-    }
-
-    public void setMouseReleasedY(int mouseReleasedY) {
-        this.mouseReleasedY = mouseReleasedY;
     }
 
     public int getMouseDraggedX() {
@@ -185,40 +172,21 @@ public class CanvasModel {
         return shapes;
     }
 
-    public void setShapes(List<Shape> shapes) {
-        this.shapes = shapes;
-    }
-
     public List<FilledTemp> getFilledTemps() {
         return filledTemps;
-    }
-
-    public void setFilledTemps(List<FilledTemp> filledTemps) {
-        this.filledTemps = filledTemps;
     }
 
     public List<FilledTemp> getFilledTempsRedo() {
         return filledTempsRedo;
     }
 
-    public void setFilledTempsRedo(List<FilledTemp> filledTempsRedo) {
-        this.filledTempsRedo = filledTempsRedo;
-    }
-
     public List<Shape> getShapesRedo() {
         return shapesRedo;
     }
 
-    public void setShapesRedo(List<Shape> shapesRedo) {
-        this.shapesRedo = shapesRedo;
-    }
 
     public Robot getRobot() {
         return robot;
-    }
-
-    public void setRobot(Robot robot) {
-        this.robot = robot;
     }
 
     public boolean isMousePressed() {
@@ -241,16 +209,8 @@ public class CanvasModel {
         return filledTempDelay;
     }
 
-    public void setFilledTempDelay(List<Boolean> filledTempDelay) {
-        this.filledTempDelay = filledTempDelay;
-    }
-
     public List<Boolean> getFilledTempDelayRedo() {
         return filledTempDelayRedo;
-    }
-
-    public void setFilledTempDelayRedo(List<Boolean> filledTempDelayRedo) {
-        this.filledTempDelayRedo = filledTempDelayRedo;
     }
 
     public Image getImageTemp() {

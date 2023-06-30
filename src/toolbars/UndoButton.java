@@ -10,14 +10,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Objects;
 
 public class UndoButton extends JButton implements ActionListener {
-    private CanvasPanel canvasPanel;
-    private CanvasModel canvasModel;
-    private ImageIcon ICON = new ImageIcon(this.getClass().getResource(IconSourcePath.UNDO));
+    private final CanvasPanel canvasPanel;
+    private final CanvasModel canvasModel;
 
     public UndoButton(PaintGui frame) {
         super("Undo");
+        ImageIcon ICON = new ImageIcon(Objects.requireNonNull(this.getClass().getResource(IconSourcePath.UNDO)));
         this.setIcon(ICON);
         canvasPanel = frame.getCanvasPanel();
         canvasModel = frame.getCanvasPanel().getCanvasModel();

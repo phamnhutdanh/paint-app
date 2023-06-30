@@ -8,13 +8,14 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.Objects;
 
-public class CoordinateBar extends JToolBar implements MouseListener, MouseMotionListener{
+public class CoordinateBar extends JToolBar implements MouseListener, MouseMotionListener {
     private JLabel coordinates;
     private JLabel frameSize;
-    private PaintGui frame;
-    private ImageIcon ICON_COORDINATES = new ImageIcon(getClass().getResource(IconSourcePath.COORDINATES));
-    private ImageIcon ICON_SIZE_PIC = new ImageIcon(getClass().getResource(IconSourcePath.SIZE_PIC));
+    private final PaintGui frame;
+    private final ImageIcon ICON_COORDINATES = new ImageIcon(Objects.requireNonNull(getClass().getResource(IconSourcePath.COORDINATES)));
+    private final ImageIcon ICON_SIZE_PIC = new ImageIcon(Objects.requireNonNull(getClass().getResource(IconSourcePath.SIZE_PIC)));
 
     public CoordinateBar(PaintGui frame) {
         super(JToolBar.HORIZONTAL);
@@ -53,15 +54,7 @@ public class CoordinateBar extends JToolBar implements MouseListener, MouseMotio
         frame.getCanvasPanel().addMouseListener(this);
         frame.getCanvasPanel().addMouseMotionListener(this);
     }
-   public JLabel getCoordinates() {
-        return coordinates;
-    }
-    public JLabel getFrameSize() {
-        return frameSize;
-    }
-    public JToolBar getCoordinateBar() {
-        return this;
-    }
+
     public void printCoordinates(MouseEvent e) {
         String posX = String.valueOf((int) e.getPoint().getX());
         String posY = String.valueOf((int) e.getPoint().getY());
@@ -71,27 +64,34 @@ public class CoordinateBar extends JToolBar implements MouseListener, MouseMotio
     public void printPaintPanelSize(int width, int height) {
         frameSize.setText(width + ",  " + height + " px");
     }
+
     @Override
     public void mouseClicked(MouseEvent e) {
     }
+
     @Override
     public void mouseReleased(MouseEvent e) {
     }
+
     @Override
     public void mouseEntered(MouseEvent e) {
     }
+
     @Override
     public void mouseExited(MouseEvent e) {
 
     }
+
     @Override
     public void mousePressed(MouseEvent e) {
         printCoordinates(e);
     }
+
     @Override
     public void mouseDragged(MouseEvent e) {
         printCoordinates(e);
     }
+
     @Override
     public void mouseMoved(MouseEvent e) {
         printCoordinates(e);

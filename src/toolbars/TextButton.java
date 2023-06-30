@@ -9,15 +9,16 @@ import utils.SHAPE_TYPE;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.Objects;
 
 public class TextButton extends JButton implements ActionListener, MouseListener, MouseMotionListener {
-    private PaintGui frame;
-    private CanvasPanel canvasPanel;
-    private CanvasModel canvasModel;
-    private ImageIcon ICON = new ImageIcon(this.getClass().getResource(IconSourcePath.TEXT));
+    private final PaintGui frame;
+    private final CanvasPanel canvasPanel;
+    private final CanvasModel canvasModel;
 
     public TextButton(PaintGui frame) {
         super("Text");
+        ImageIcon ICON = new ImageIcon(Objects.requireNonNull(this.getClass().getResource(IconSourcePath.TEXT)));
         this.setIcon(ICON);
         this.frame = frame;
         canvasPanel = frame.getCanvasPanel();
@@ -45,7 +46,7 @@ public class TextButton extends JButton implements ActionListener, MouseListener
         canvasModel.setMousePressedX((int) (e.getX() / canvasModel.getWidthScale()));
         canvasModel.setMousePressedY((int) (e.getY() / canvasModel.getWidthScale()));
 
-        TextDialog textDialog =new TextDialog(frame);
+        TextDialog textDialog = new TextDialog(frame);
         int i = textDialog.showCustomDialog(frame);
         if (i == TextDialog.APPLY_OPTION) {
             canvasModel.addShape(new Shape(
@@ -81,12 +82,15 @@ public class TextButton extends JButton implements ActionListener, MouseListener
     @Override
     public void mouseEntered(MouseEvent e) {
     }
+
     @Override
     public void mouseExited(MouseEvent e) {
     }
+
     @Override
     public void mouseDragged(MouseEvent e) {
     }
+
     @Override
     public void mouseMoved(MouseEvent e) {
     }

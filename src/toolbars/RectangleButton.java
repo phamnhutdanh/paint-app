@@ -9,14 +9,15 @@ import utils.SHAPE_TYPE;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.Objects;
 
 public class RectangleButton extends JButton implements ActionListener, MouseListener, MouseMotionListener {
-    private CanvasPanel canvasPanel;
-    private CanvasModel canvasModel;
-    private ImageIcon ICON = new ImageIcon(this.getClass().getResource(IconSourcePath.RECTANGLE));
+    private final CanvasPanel canvasPanel;
+    private final CanvasModel canvasModel;
 
     public RectangleButton(PaintGui frame) {
         super("Rectangle");
+        ImageIcon ICON = new ImageIcon(Objects.requireNonNull(this.getClass().getResource(IconSourcePath.RECTANGLE)));
         this.setIcon(ICON);
         canvasPanel = frame.getCanvasPanel();
         canvasModel = frame.getCanvasPanel().getCanvasModel();

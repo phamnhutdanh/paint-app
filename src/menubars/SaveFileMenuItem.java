@@ -16,21 +16,22 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 public class SaveFileMenuItem extends JMenuItem implements ActionListener {
-    private CanvasPanel canvasPanel;
-    private ImageIcon ICON = new ImageIcon(this.getClass().getResource(IconSourcePath.SAVE));
-    private JFileChooser fc;
+    private final CanvasPanel canvasPanel;
+
     public SaveFileMenuItem(PaintGui frame) {
         super("Save file");
-        canvasPanel =frame.getCanvasPanel();
+        canvasPanel = frame.getCanvasPanel();
+        ImageIcon ICON = new ImageIcon(Objects.requireNonNull(this.getClass().getResource(IconSourcePath.SAVE)));
         this.setIcon(ICON);
         initFileChooser();
 
         this.addActionListener(this);
     }
     private void initFileChooser() {
-        fc = new JFileChooser(new File("."));
+        JFileChooser fc = new JFileChooser(new File("."));
         fc.setFileFilter(new FileNameExtensionFilter("Image Files", "jpg", "png"));
     }
     @Override

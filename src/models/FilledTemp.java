@@ -3,7 +3,8 @@ package models;
 import java.awt.Color;
 
 public class FilledTemp {
-    private int startIndex, endIndex;
+    private final int startIndex;
+    private final int endIndex;
     private Color color;
     private static final int CANVAS_INDEX = -1;
 
@@ -17,17 +18,10 @@ public class FilledTemp {
         return startIndex;
     }
 
-    public void setStartIndex(int startIndex) {
-        this.startIndex = startIndex;
-    }
-
     public int getEndIndex() {
         return endIndex;
     }
 
-    public void setEndIndex(int endIndex) {
-        this.endIndex = endIndex;
-    }
 
     public Color getColor() {
         return color;

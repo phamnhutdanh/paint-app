@@ -10,15 +10,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Objects;
 
 public class RedoButton extends JButton implements ActionListener {
-    private CanvasPanel canvasPanel;
-    private CanvasModel canvasModel;
-
-    private ImageIcon ICON = new ImageIcon(this.getClass().getResource(IconSourcePath.REDO));
+    private final CanvasPanel canvasPanel;
+    private final CanvasModel canvasModel;
 
     public RedoButton(PaintGui frame) {
         super("Redo");
+        ImageIcon ICON = new ImageIcon(Objects.requireNonNull(this.getClass().getResource(IconSourcePath.REDO)));
         this.setIcon(ICON);
         canvasPanel = frame.getCanvasPanel();
         canvasModel = frame.getCanvasPanel().getCanvasModel();

@@ -15,14 +15,14 @@ import java.awt.event.ActionListener;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 public class OpenFileMenuItem extends JMenuItem implements ActionListener {
-    private PaintGui frame;
-    private ImageIcon ICON = new ImageIcon(this.getClass().getResource(IconSourcePath.OPEN));
-    private JFileChooser fc;
+    private final PaintGui frame;
 
     public OpenFileMenuItem(PaintGui frame) {
         super("Open file");
+        ImageIcon ICON = new ImageIcon(Objects.requireNonNull(this.getClass().getResource(IconSourcePath.OPEN)));
         this.setIcon(ICON);
         this.frame = frame;
         initFileChooser();
@@ -31,7 +31,7 @@ public class OpenFileMenuItem extends JMenuItem implements ActionListener {
     }
 
     private void initFileChooser() {
-        fc = new JFileChooser(new File("."));
+        JFileChooser fc = new JFileChooser(new File("."));
         fc.setFileFilter(new FileNameExtensionFilter("Image Files", "jpg", "png"));
     }
 
@@ -53,11 +53,11 @@ public class OpenFileMenuItem extends JMenuItem implements ActionListener {
         }
         try {
             canvas.setImageDefault(ImageIO.read(new File(filePath)));
-            canvas.setImageTemp(canvas.getImageDefault()); 
-            canvas.setSizeHeight(canvas.getImageDefault().getHeight(this)); 
-            canvas.setSizeWidth(canvas.getImageDefault().getWidth(this)); 
+            canvas.setImageTemp(canvas.getImageDefault());
+            canvas.setSizeHeight(canvas.getImageDefault().getHeight(this));
+            canvas.setSizeWidth(canvas.getImageDefault().getWidth(this));
             canvasPanel.scaleCanvas();
-            canvas.setImageOpened(true); 
+            canvas.setImageOpened(true);
         } catch (IOException ex) {
             ex.getStackTrace();
         }

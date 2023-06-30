@@ -8,21 +8,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ChooseLineWidthComboBox extends JComboBox implements ActionListener {
-    private PaintGui frame;
-    private String[] items = {"Line Width", "1", "2", "4",  "6",  "8","12","14","16","20","24","28","32","40"};
+    private final PaintGui frame;
 
     public ChooseLineWidthComboBox(PaintGui frame) {
         super();
         this.frame = frame;
         this.addActionListener(this);
 
+        String[] items = {"Line Width", "1", "2", "4", "6", "8", "12", "14", "16", "20", "24", "28", "32", "40"};
         addAllItems(items);
         this.setMaximumSize(new Dimension(100, 25));
     }
-    
+
     private void addAllItems(String[] items) {
-        for (int i=0;i<items.length;i++) {
-            this.addItem(items[i]);
+        for (String item : items) {
+            this.addItem(item);
         }
     }
 
@@ -32,9 +32,8 @@ public class ChooseLineWidthComboBox extends JComboBox implements ActionListener
             String current = (String) this.getSelectedItem();
             assert current != null;
 
-            frame.getCanvasPanel().getCanvasModel().setShapeThickness(Integer.parseInt(current)); 
-        }
-        catch (NumberFormatException exception) {
+            frame.getCanvasPanel().getCanvasModel().setShapeThickness(Integer.parseInt(current));
+        } catch (NumberFormatException exception) {
 
         }
     }

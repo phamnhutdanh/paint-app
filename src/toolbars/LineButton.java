@@ -9,14 +9,15 @@ import utils.SHAPE_TYPE;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.Objects;
 
 public class LineButton extends JButton implements ActionListener, MouseListener, MouseMotionListener {
-    private CanvasPanel canvasPanel;
-    private CanvasModel canvasModel;
-    private ImageIcon ICON = new ImageIcon(this.getClass().getResource(IconSourcePath.LINE));
+    private final CanvasPanel canvasPanel;
+    private final CanvasModel canvasModel;
 
     public LineButton(PaintGui frame) {
         super("Line");
+        ImageIcon ICON = new ImageIcon(Objects.requireNonNull(this.getClass().getResource(IconSourcePath.LINE)));
         this.setIcon(ICON);
         canvasPanel = frame.getCanvasPanel();
         canvasModel = frame.getCanvasPanel().getCanvasModel();

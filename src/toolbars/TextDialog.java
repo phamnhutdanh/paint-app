@@ -8,6 +8,7 @@ import java.awt.Frame;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Objects;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -29,22 +30,22 @@ public class TextDialog extends JDialog implements ActionListener, ChangeListene
     public static final int APPLY_OPTION = 0;
     public static final int CANCEL_OPTION = 1;
     private int userResponse;
-    private JTextField example;
-    private JTextField input;
-    private JButton ok;
-    private JButton cancel;
-    private JComboBox fonts;
-    private JComboBox sizes;
-    private int inputSize;
+    private final JTextField example;
+    private final JTextField input;
+    private final JButton ok;
+    private final JButton cancel;
+    private final JComboBox fonts;
+    private final JComboBox sizes;
     private String inputText;
-    private  Font mainFont;
+    private Font mainFont;
+
     TextDialog(Frame owner) {
         super(owner, "Customize Text", true);
         this.setResizable(false);
 
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         String[] fontList = ge.getAvailableFontFamilyNames();
-        String[] fontSize = {"12","14","50","52","53","54","55","80"};
+        String[] fontSize = {"12", "14", "50", "52", "53", "54", "55", "80"};
 
         sizes = new JComboBox(fontSize);
         fonts = new JComboBox(fontList);
@@ -53,23 +54,25 @@ public class TextDialog extends JDialog implements ActionListener, ChangeListene
         example.setHorizontalAlignment(SwingConstants.CENTER);
         example.setFont(new Font("sanserif", Font.PLAIN, 28));
         example.setEditable(false);
-        example.setPreferredSize(new Dimension(200,50));
+        example.setPreferredSize(new Dimension(200, 50));
 
         ok = new JButton("Apply");
         cancel = new JButton("Cancel");
         ok.setPreferredSize(cancel.getPreferredSize());
 
         input = new JTextField("Example");
-        input.setPreferredSize(new Dimension(200,50));
+        input.setPreferredSize(new Dimension(200, 50));
         input.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 update();
             }
+
             @Override
             public void removeUpdate(DocumentEvent e) {
                 update();
             }
+
             @Override
             public void changedUpdate(DocumentEvent e) {
                 update();
@@ -132,6 +135,7 @@ public class TextDialog extends JDialog implements ActionListener, ChangeListene
     public Font getFont() {
         return this.mainFont;
     }
+
     public String getText() {
         return this.inputText;
     }
@@ -144,12 +148,10 @@ public class TextDialog extends JDialog implements ActionListener, ChangeListene
             userResponse = APPLY_OPTION;
             update();
             this.setVisible(false);
-        }
-
-        else if (source == cancel) {
+        } else if (source == cancel) {
             userResponse = CANCEL_OPTION;
             this.setVisible(false);
-        }else {
+        } else {
             update();
         }
 
@@ -157,7 +159,7 @@ public class TextDialog extends JDialog implements ActionListener, ChangeListene
 
     public void update() {
         inputText = input.getText();
-        inputSize = Integer.parseInt((String) sizes.getSelectedItem());
+        int inputSize = Integer.parseInt((String) Objects.requireNonNull(sizes.getSelectedItem()));
         mainFont = new Font((String) fonts.getSelectedItem(), Font.PLAIN, inputSize);
         example.setFont(mainFont);
         example.setText(inputText);

@@ -1,17 +1,15 @@
 package menubars;
 
-import models.CanvasModel;
-import panels.CanvasPanel;
 import ui.PaintGui;
-import utils.IconSourcePath;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ShowAndHideCoordinateBarMenuItem extends JMenuItem implements ActionListener {
-    private PaintGui frame;
+    private final PaintGui frame;
     private boolean isHide;
+
     public ShowAndHideCoordinateBarMenuItem(PaintGui frame) {
         super("Hide status bar");
         this.frame = frame;
@@ -25,8 +23,7 @@ public class ShowAndHideCoordinateBarMenuItem extends JMenuItem implements Actio
         isHide = !isHide;
         if (isHide) {
             setText("Show status bar");
-        }
-        else {
+        } else {
             setText("Hide status bar");
         }
     }
