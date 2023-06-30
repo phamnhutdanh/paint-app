@@ -7,7 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ToolBar extends JToolBar {
-    private PencilButton pencilButton;
+    private BrushButton pencilButton;
     private LineButton lineButton;
     private RectangleButton rectangleButton;
     private CircleButton circleButton;
@@ -16,8 +16,8 @@ public class ToolBar extends JToolBar {
     private RedoButton redoButton;
     private EraserButton eraserButton;
     private ChooseLineWidthComboBox chooseLineWidthComboBox;
+    private TextButton textButton;
 
-    private JButton text;
     private PaintGui frame;
 
     public ToolBar(PaintGui frame) {
@@ -36,11 +36,11 @@ public class ToolBar extends JToolBar {
         flowLayout.setAlignment(FlowLayout.LEFT);
         setLayout(flowLayout);
 
-        pencilButton = new PencilButton(frame);
+        pencilButton = new BrushButton(frame);
         lineButton = new LineButton(frame);
         rectangleButton = new RectangleButton(frame);
         circleButton = new CircleButton(frame);
-        text = new JButton("Text", new ImageIcon(this.getClass().getResource(IconSourcePath.TEXT)));
+        textButton = new TextButton(frame);
         eraserButton = new EraserButton(frame);
 
         undoButton = new UndoButton(frame);
@@ -57,7 +57,7 @@ public class ToolBar extends JToolBar {
         add(rectangleButton);
         add(circleButton);
         addSeparator();
-        add(text);
+        add(textButton);
         add(eraserButton);
         add(clearButton);
         addSeparator();

@@ -2,7 +2,7 @@ package models;
 
 import utils.SHAPE_TYPE;
 
-import java.awt.Color;
+import java.awt.*;
 
 public class Shape {
     private Color color;
@@ -11,6 +11,9 @@ public class Shape {
     private SHAPE_TYPE type;
     private boolean endOfShape = false;
     private boolean pressed;
+
+    private String message;
+    private Font font;
 
     public Shape(int x, int y, Color color, int thickness, SHAPE_TYPE type) {
         this.x = x;
@@ -28,6 +31,16 @@ public class Shape {
         this.type = type;
         this.height = height;
         this.width = width;
+    }
+
+    public Shape(int x, int y, Font font, Color color, int thickness, String message, SHAPE_TYPE type) {
+        this.x = x;
+        this.y = y;
+        this.color = color;
+        this.thickness = thickness;
+        this.type = type;
+        this.font = font;
+        this.message = message;
     }
 
     public boolean isEndOfShape() {
@@ -100,5 +113,21 @@ public class Shape {
 
     public void setPressed(boolean pressed) {
         this.pressed = pressed;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public Font getFont() {
+        return font;
+    }
+
+    public void setFont(Font font) {
+        this.font = font;
     }
 }

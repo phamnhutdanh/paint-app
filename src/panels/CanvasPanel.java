@@ -78,6 +78,11 @@ public class CanvasPanel extends JPanel {
                     } else if (i != 0 && !shapes.get(i - 1).isEndOfShape() && shapes.get(i - 1).getType() == SHAPE_TYPE.ERASER) {
                         g2d.drawLine(shapes.get(i - 1).getX(), shapes.get(i - 1).getY(), shapes.get(i).getX(), shapes.get(i).getY());
                     }
+                case TEXT:
+                    g2d.setStroke(new BasicStroke(shapes.get(i).getThickness()));
+                    g2d.setFont(shapes.get(i).getFont());
+                    g2d.drawString(shapes.get(i).getMessage(), shapes.get(i).getX(), shapes.get(i).getY());
+                    break;
                 default:
                     break;
             }
@@ -89,7 +94,7 @@ public class CanvasPanel extends JPanel {
             g2d.setColor(shapeColor);
             g2d.setStroke(new BasicStroke(shapeThickness));
             calculateShapePoint();
-            int  startX = canvasModel.getStartX(),
+            int startX = canvasModel.getStartX(),
                     startY = canvasModel.getStartY(), width = canvasModel.getWidth(),
                     height = canvasModel.getHeight();
             switch (canvasModel.getShapeType()) {
