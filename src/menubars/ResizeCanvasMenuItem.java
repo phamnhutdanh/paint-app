@@ -68,7 +68,7 @@ public class ResizeCanvasMenuItem extends JMenuItem implements ActionListener {
                                 Integer.parseInt(height.getText()));
                         System.out.println(newDimensions);
 
-                        frame.getCanvasPanel().setPanelSize(newDimensions.width, newDimensions.height);
+                        frame.getCanvasPanel().resizeCanvas(newDimensions.width, newDimensions.height);
                         Utils.setDimensions(frame, newDimensions.width, newDimensions.height);
                         newFileFrame.dispose();
                     } catch (NumberFormatException nfe) {

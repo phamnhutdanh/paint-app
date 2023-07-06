@@ -4,16 +4,10 @@ import models.CanvasModel;
 import models.Shape;
 import utils.SHAPE_TYPE;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
 import java.util.List;
 import javax.swing.JPanel;
-import java.awt.RenderingHints;
 
 public class CanvasPanel extends JPanel {
     private final CanvasModel canvasModel;
@@ -113,19 +107,19 @@ public class CanvasPanel extends JPanel {
     }
 
     public void scaleCanvas() {
-        this.setPreferredSize(new Dimension((int) (canvasModel.getSizeWidth() * canvasModel.getWidthScale()),
-                (int) (canvasModel.getSizeHeight() * canvasModel.getHeightScale())));
-        revalidate();
-        repaint();
+        int newWith = (int) (canvasModel.getSizeWidth()*canvasModel.getWidthScale() );
+        int newHeight = (int) (canvasModel.getSizeHeight()*canvasModel.getHeightScale());
+        this.setPreferredSize(new Dimension(newWith,newHeight));
+        this.revalidate();
+        this.repaint();
     }
-
-    public void setPanelSize(int width, int height) {
-        BufferedImage canvas = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D graphics2D = canvas.createGraphics();
-        graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        this.setSize(width - 3, height - 3);
-        this.setPreferredSize(new Dimension(width - 3, height - 3));
-        resetCanvas();
+    public void resizeCanvas(int width, int height) {
+        canvasModel.setSizeHeight(height);
+        canvasModel.setSizeWidth(width);
+        if (canvasModel.isImageOpened()) {
+            canvasModel.setImageTemp(canvasModel.getImageDefault().getScaledInstance(width,height, Image.SCALE_SMOOTH));
+        }
+        scaleCanvas();
     }
 
     private void calculateShapePoint() {
