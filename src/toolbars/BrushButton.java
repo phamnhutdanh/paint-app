@@ -16,7 +16,7 @@ public class BrushButton extends JButton implements ActionListener, MouseListene
     private final CanvasModel canvasModel;
 
     public BrushButton(PaintGui frame) {
-        super("Pencil");
+        super("Brush");
         ImageIcon ICON = new ImageIcon(Objects.requireNonNull(this.getClass().getResource(IconSourcePath.BRUSH)));
         this.setIcon(ICON);
         canvasPanel = frame.getCanvasPanel();
