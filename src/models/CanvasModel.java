@@ -38,7 +38,7 @@ public class CanvasModel {
 
     public CanvasModel() {
         shapeThickness = 4;
-        canvasColor = new Color(238, 238, 238);
+        canvasColor = new Color(255, 255, 255);
         isBlank = true;
         shapes = new ArrayList<>();
         filledTemps = new ArrayList<>();
