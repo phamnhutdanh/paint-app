@@ -19,4 +19,5 @@ public class IconSourcePath {
     public static final String COORDINATES = "/icons/coordinates.png";
     public static final String SIZE_PIC = "/icons/size.png";
     public static final String EXIT = "/icons/exit.png";
+    public static final String LOGO = "/icons/logo.png";
 }

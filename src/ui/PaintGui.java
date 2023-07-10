@@ -7,6 +7,7 @@ import menubars.SaveFileMenuItem;
 import models.CanvasModel;
 import panels.CanvasPanel;
 import toolbars.ToolBar;
+import utils.IconSourcePath;
 
 import javax.swing.*;
 import java.awt.*;
@@ -43,6 +44,7 @@ public class PaintGui extends JFrame {
     }
 
     public void drawUI() {
+        setIconImage(Toolkit.getDefaultToolkit().getImage(PaintGui.class.getResource(IconSourcePath.LOGO)));
         setTitle("Paint App");
         setBackground(new Color(39, 174, 96));
         pack();

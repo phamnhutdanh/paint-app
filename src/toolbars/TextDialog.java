@@ -45,7 +45,9 @@ public class TextDialog extends JDialog implements ActionListener, ChangeListene
 
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         String[] fontList = ge.getAvailableFontFamilyNames();
-        String[] fontSize = {"12", "14", "50", "52", "53", "54", "55", "80"};
+        String[] fontSize = {"8", "12", "16", "20", "24",
+                "28", "32", "40", "48", "60", "64", "72", "80", "100"
+        };
 
         sizes = new JComboBox(fontSize);
         fonts = new JComboBox(fontList);
