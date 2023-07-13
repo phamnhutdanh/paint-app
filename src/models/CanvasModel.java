@@ -17,7 +17,8 @@ public class CanvasModel {
     private int mouseDraggedY;
     private int width, height,
             startX, startY;
-    private Color shapeColor, canvasColor;
+    private Color shapeColor;
+    private final Color canvasColor;
     private SHAPE_TYPE shapeType;
 
     private final List<Shape> shapes;
@@ -68,7 +69,6 @@ public class CanvasModel {
         shapesRedo.clear();
         filledTempDelay.clear();
         filledTempDelayRedo.clear();
-        canvasColor = new Color(238, 238, 238);
         if (this.imageOpened) {
             imageOpened = false;
             this.imageDefault.flush();
@@ -162,10 +162,6 @@ public class CanvasModel {
 
     public Color getCanvasColor() {
         return canvasColor;
-    }
-
-    public void setCanvasColor(Color canvasColor) {
-        this.canvasColor = canvasColor;
     }
 
     public List<Shape> getShapes() {

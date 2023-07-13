@@ -78,7 +78,6 @@ public class RedoButton extends JButton implements ActionListener {
         int endOfCount = 0;
         if (filledTemp.getStartIndex() == FilledTemp.getCanvasIndex()) {
             previousColor = canvasModel.getCanvasColor();
-            canvasModel.setCanvasColor(filledTemp.getColor());
             canvasPanel.setBackground(filledTemp.getColor());
             return previousColor;
         }
